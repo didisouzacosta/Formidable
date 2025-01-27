@@ -120,10 +120,10 @@ public struct EqualRule<Root, Value: Equatable>: FormFieldRule {
         }
         
         // Apply the transformer if available
-        let anotherValueTransformed = transform?(referenceValue) ?? referenceValue
+        let referenceValueTransformed = transform?(referenceValue) ?? referenceValue
         
         // Perform the comparison
-        if value != referenceValue {
+        if value != referenceValueTransformed {
             throw error
         }
     }

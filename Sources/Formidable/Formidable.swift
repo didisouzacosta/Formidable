@@ -54,14 +54,14 @@ public extension Formidable {
     
     /// A computed property that indicates whether all form fields are valid.
     /// Returns `true` if there are no errors, `false` otherwise.
-    public var isValid: Bool {
+    var isValid: Bool {
         errors.isEmpty
     }
     
     /// A computed property that gathers all errors from the form fields.
     /// Returns an array of errors, with each error potentially coming from a different field.
-    public var errors: [Error] {
-        fields.flatMap { $0.errors.flatMap { $0 } }
+    var errors: [Error] {
+        fields.flatMap { $0.errors.compactMap { $0 } }
     }
     
     // MARK: - Private Properties
