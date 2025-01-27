@@ -39,10 +39,6 @@ The `FormFieldValue` class represents a form field with a specific value. It is 
 - **`originalValue`**: The original value of the field when it was first created. This is used to reset the field to its initial value.
 - **`value`**: The current value of the field. This is the value that can be accessed and modified. The getter applies the `transform` closure (if provided) to the value.
 
-#### Private Variables
-
-- **`_value`**: The underlying value of the field. It is private and cannot be accessed directly from outside the class.
-
 ---
 
 ### Formidable Protocol
