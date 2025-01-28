@@ -5,6 +5,8 @@
 //  Created by Adriano Costa on 26/01/25.
 //
 
+import Foundation
+
 /// A generic validation rule that ensures a value is less than a reference value.
 ///
 /// The reference value can be either:
@@ -91,16 +93,9 @@ public struct LessThanRule<Root, Value: Comparable>: FormFieldRule {
     
     // MARK: - Private Properties
     
-    /// The source of the reference value.
     private let reference: ReferenceValue<Value, Root>
-    
-    /// The object that contains the reference value when using a `KeyPath`.
-    private let referenceRoot: Root?
-    
-    /// An optional closure to transform the reference value before comparison.
+    private let referenceRoot: Root!
     private let transform: ((Value) -> Value)?
-    
-    /// The error to throw when validation fails.
     private let error: Error
     
     // MARK: - Initializers
@@ -154,27 +149,20 @@ public struct LessThanRule<Root, Value: Comparable>: FormFieldRule {
     public func validate(_ value: Value?) throws {
         guard let value else { return }
         
-        // Retrieve the reference value
         let referenceValue: Value
         
         switch reference {
         case .staticValue(let staticValue):
             referenceValue = staticValue
         case .keyPath(let keyPath):
-            guard let referenceRoot else {
-                fatalError("`referenceRoot` is nil. This should never happen when using a KeyPath.")
-            }
             referenceValue = referenceRoot[keyPath: keyPath]
         }
         
-        // Apply the transformer if available
         let referenceValueTransformed = transform?(referenceValue) ?? referenceValue
         
-        // Perform the comparison
         if value >= referenceValueTransformed {
             throw error
         }
     }
     
 }
-

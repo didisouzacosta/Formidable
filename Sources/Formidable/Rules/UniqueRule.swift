@@ -21,7 +21,7 @@ public struct UniqueRule<Root, Value: Equatable>: FormFieldRule {
     // MARK: - Private Properties
     
     private let reference: ReferenceValue<Items, Root>
-    private let referenceRoot: Root?
+    private let referenceRoot: Root!
     private let transform: ((Items) -> Items)?
     private let error: Error
     
@@ -103,9 +103,6 @@ public struct UniqueRule<Root, Value: Equatable>: FormFieldRule {
         case .staticValue(let staticValue):
             referenceValue = staticValue
         case .keyPath(let keyPath):
-            guard let referenceRoot else {
-                fatalError("`referenceRoot` is nil. This should never happen when using a KeyPath.")
-            }
             referenceValue = referenceRoot[keyPath: keyPath]
         }
         
