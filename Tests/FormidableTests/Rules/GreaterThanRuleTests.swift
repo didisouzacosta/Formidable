@@ -4,29 +4,29 @@ import Testing
 
 struct GreaterThanRuleTests {
  
-    private let error = TestError.valueAreNotGreather
+    private let error = TestError.valueAreNotGreater
     
     @Test func mustBeValidWhenValueIsGreather() throws {
-        let rule = GreaterThan<Any, Int>(100, error: error)
+        let rule = GreaterThanRule<Any, Int>(100, error: error)
         try rule.validate(101)
     }
     
-    @Test func mustBeInvalidWhenValueIsNotGreather() {
-        let rule = GreaterThan<Any, Int>(10, error: error)
+    @Test func mustBeInvalidWhenValueIsNotGreater() {
+        let rule = GreaterThanRule<Any, Int>(10, error: error)
 
         #expect(throws: error) {
             try rule.validate(9)
         }
     }
     
-    @Test func mustBeValidWhenKeyPathValueIsGreather() throws {
+    @Test func mustBeValidWhenKeyPathValueIsGreater() throws {
         let person = Person(36)
-        let rule = GreaterThan(person, keyPath: \.age, error: error)
+        let rule = GreaterThanRule(person, keyPath: \.age, error: error)
         
         try rule.validate(37)
     }
     
-    @Test func mustBeInvalidWhenKeyPathValueIsNotGreather() throws {
+    @Test func mustBeInvalidWhenKeyPathValueIsNotGreater() throws {
         let person = Person(36)
         let rule = EqualRule(person, keyPath: \.age, error: error)
         
@@ -35,7 +35,7 @@ struct GreaterThanRuleTests {
         }
     }
     
-    @Test func mustBeValidWhenKeyPathValueIsGreatherUsingTransformer() throws {
+    @Test func mustBeValidWhenKeyPathValueIsGreaterUsingTransformer() throws {
         let person = Person(36)
         let rule = EqualRule(
             person,
@@ -47,7 +47,7 @@ struct GreaterThanRuleTests {
         try rule.validate(40)
     }
     
-    @Test func mustBeInvalidWhenKeyPathValueIsNotGreatherUsingTransformer() throws {
+    @Test func mustBeInvalidWhenKeyPathValueIsNotGreaterUsingTransformer() throws {
         let person = Person(36)
         let rule = EqualRule(
             person,

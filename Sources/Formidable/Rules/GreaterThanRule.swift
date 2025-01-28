@@ -1,5 +1,5 @@
 //
-//  GreaterThan.swift
+//  GreaterThanRule.swift
 //  Formidable
 //
 //  Created by Adriano Costa on 14/01/25.
@@ -26,7 +26,7 @@
 ///     case tooSmall
 /// }
 ///
-/// let rule = GreaterThan(
+/// let rule = GreaterThanRule(
 ///     staticValue: 10,
 ///     error: ValidationError.tooSmall
 /// )
@@ -51,7 +51,7 @@
 ///
 /// let person = Person(age: 18)
 ///
-/// let rule = GreaterThan(
+/// let rule = GreaterThanRule(
 ///     referenceRoot: person,
 ///     keyPath: \Person.age,
 ///     error: ValidationError.tooSmall
@@ -71,7 +71,7 @@
 ///     case tooSmall
 /// }
 ///
-/// let rule = GreaterThan(
+/// let rule = GreaterThanRule(
 ///     staticValue: 10,
 ///     transform: { $0 + 5 }, // Adds 5 to the reference value
 ///     error: ValidationError.tooSmall
@@ -84,7 +84,7 @@
 ///     print("Validation failed: \(error)")
 /// }
 /// ```
-public struct GreaterThan<Root, Value: Comparable>: FormFieldRule {
+public struct GreaterThanRule<Root, Value: Comparable>: FormFieldRule {
     
     // MARK: - Private Properties
     

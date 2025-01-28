@@ -31,7 +31,7 @@ import SwiftUI
 ///
 /// let formField = FormFieldValue(
 ///     3,
-///     rules: [GreaterThan(staticValue: 5, error: ValidationError.invalidValue)],
+///     rules: [GreaterThanRule(staticValue: 5, error: ValidationError.invalidValue)],
 ///     valueChanged: { oldValue, newValue in
 ///         print("Value changed from \(oldValue) to \(newValue)")
 ///     }
