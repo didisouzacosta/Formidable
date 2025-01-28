@@ -6,12 +6,12 @@ struct EqualRuleTests {
  
     private let error = TestError.valuesAreNotEqual
     
-    @Test func equalRuleWithStaticValueEqual() throws {
+    @Test func mustBeValidWhenValueIsEqual() throws {
         let rule = EqualRule<Any, Int>(10, error: error)
         try rule.validate(10)
     }
     
-    @Test func equalRuleWithStaticValueNotEqual() {
+    @Test func mustBeInvalidWhenValueIsNotEqual() {
         let rule = EqualRule<Any, Int>(10, error: error)
 
         #expect(throws: error) {
@@ -19,14 +19,14 @@ struct EqualRuleTests {
         }
     }
     
-    @Test func equalRuleWithKeyPathValueEqual() throws {
+    @Test func mustBeValidWhenKeyPathValueIsEqual() throws {
         let person = Person("Orlando")
         let rule = EqualRule(person, keyPath: \.name, error: error)
         
         try rule.validate("Orlando")
     }
     
-    @Test func equalRuleWithKeyPathValueNotEqual() throws {
+    @Test func mustBeInvalidWhenKeyPathValueIsNotEqual() throws {
         let person = Person("Orlando")
         let rule = EqualRule(person, keyPath: \.name, error: error)
         
@@ -35,7 +35,7 @@ struct EqualRuleTests {
         }
     }
     
-    @Test func equalRuleWithKeyPathValueEqualUsingTransformer() throws {
+    @Test func mustBeValidWhenKeyPathValueIsEqualUsingTransformer() throws {
         let person = Person("Orlando")
         let rule = EqualRule(
             person,
@@ -47,7 +47,7 @@ struct EqualRuleTests {
         try rule.validate("Orlando Bolotari Costa")
     }
     
-    @Test func equalRuleWithKeyPathValueNotEqualUsingTransformer() throws {
+    @Test func mustBeInvalidWhenKeyPathValueIsNotEqualUsingTransformer() throws {
         let person = Person("Orlando")
         let rule = EqualRule(
             person,
