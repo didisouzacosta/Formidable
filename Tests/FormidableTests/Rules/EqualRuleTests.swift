@@ -21,6 +21,7 @@ struct EqualRuleTests {
     
     @Test func mustBeValidWhenValueIsEqual() throws {
         let rule = EqualRule<Any, Int>(10, error: error)
+        
         try rule.validate(10)
     }
     

@@ -21,6 +21,7 @@ struct GreaterThanRuleTests {
     
     @Test func mustBeValidWhenValueIsGreather() throws {
         let rule = GreaterThanRule<Any, Int>(100, error: error)
+        
         try rule.validate(101)
     }
     

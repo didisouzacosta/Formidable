@@ -21,6 +21,7 @@ struct LessThanRuleTests {
     
     @Test func mustBeValidWhenValueIsLess() throws {
         let rule = LessThanRule<Any, Int>(20, error: error)
+        
         try rule.validate(19)
     }
     
