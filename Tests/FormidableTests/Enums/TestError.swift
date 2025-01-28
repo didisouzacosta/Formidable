@@ -7,4 +7,5 @@
 
 enum TestError: Error, Equatable {
     case valuesAreNotEqual
+    case valueAreNotGreather
 }
