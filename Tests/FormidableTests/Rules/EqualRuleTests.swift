@@ -6,6 +6,19 @@ struct EqualRuleTests {
  
     private let error = TestError.valuesAreNotEqual
     
+    @Test func mustBeValidWhenValidateValueIsNil() throws {
+        let rule = EqualRule<Any, Int>(10, error: error)
+        
+        try rule.validate(nil)
+    }
+    
+    @Test func mustBeValidWhenValidateValueIsNilUsingKeyPath() throws {
+        let person = Person("Orlando")
+        let rule = EqualRule(person, keyPath: \.name, error: error)
+        
+        try rule.validate(nil)
+    }
+    
     @Test func mustBeValidWhenValueIsEqual() throws {
         let rule = EqualRule<Any, Int>(10, error: error)
         try rule.validate(10)
