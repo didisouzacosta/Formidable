@@ -6,7 +6,7 @@ struct GranThanRuleTests {
  
     private let error = TestError.valueAreNotGreather
     
-    @Test func mustBeValidWhenValueGrather() throws {
+    @Test func mustBeValidWhenValueIsGreather() throws {
         let rule = GreatherThanRule<Any, Int>(100, error: error)
         try rule.validate(101)
     }
