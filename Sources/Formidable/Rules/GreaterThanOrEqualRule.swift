@@ -1,5 +1,5 @@
 //
-//  GreatherThanOrEqualRule.swift
+//  GreaterThanOrEqualRule.swift
 //  Formidable
 //
 //  Created by Adriano Costa on 26/01/25.
@@ -26,7 +26,7 @@
 ///     case tooSmall
 /// }
 ///
-/// let rule = GreatherThanOrEqualRule(
+/// let rule = GreaterThanOrEqualRule(
 ///     staticValue: 10,
 ///     error: ValidationError.tooSmall
 /// )
@@ -52,7 +52,7 @@
 ///
 /// let person = Person(age: 18)
 ///
-/// let rule = GreatherThanOrEqualRule(
+/// let rule = GreaterThanOrEqualRule(
 ///     referenceRoot: person,
 ///     keyPath: \Person.age,
 ///     error: ValidationError.tooSmall
@@ -73,7 +73,7 @@
 ///     case tooSmall
 /// }
 ///
-/// let rule = GreatherThanOrEqualRule(
+/// let rule = GreaterThanOrEqualRule(
 ///     staticValue: 10,
 ///     transform: { $0 + 5 }, // Adds 5 to the reference value
 ///     error: ValidationError.tooSmall
@@ -87,7 +87,7 @@
 ///     print("Validation failed: \(error)")
 /// }
 /// ```
-public struct GreatherThanOrEqualRule<Root, Value: Comparable>: FormFieldRule {
+public struct GreaterThanOrEqualRule<Root, Value: Comparable>: FormFieldRule {
     
     // MARK: - Private Properties
     

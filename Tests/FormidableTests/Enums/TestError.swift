@@ -10,5 +10,6 @@ enum TestError: Error, Equatable {
     case valueAreNotGreater
     case valueAreNotLess
     case valueAreNotLessThanOrEqual
+    case valueAreNotGreaterThanOrEqual
 }
 
