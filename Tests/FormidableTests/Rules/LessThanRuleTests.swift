@@ -6,6 +6,19 @@ struct LessThanRuleTests {
  
     private let error = TestError.valueAreNotLess
     
+    @Test func mustBeValidWhenValidateValueIsNil() throws {
+        let rule = LessThanRule<Any, Int>(20, error: error)
+        
+        try rule.validate(nil)
+    }
+    
+    @Test func mustBeValidWhenValidateValueIsNilUsingKeyPath() throws {
+        let person = Person(36)
+        let rule = LessThanRule(person, keyPath: \.age, error: error)
+        
+        try rule.validate(nil)
+    }
+    
     @Test func mustBeValidWhenValueIsLess() throws {
         let rule = LessThanRule<Any, Int>(20, error: error)
         try rule.validate(19)

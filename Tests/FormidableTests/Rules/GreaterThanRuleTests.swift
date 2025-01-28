@@ -6,6 +6,19 @@ struct GreaterThanRuleTests {
  
     private let error = TestError.valueAreNotGreater
     
+    @Test func mustBeValidWhenValidateValueIsNil() throws {
+        let rule = GreaterThanRule<Any, Int>(20, error: error)
+        
+        try rule.validate(nil)
+    }
+    
+    @Test func mustBeValidWhenValidateValueIsNilUsingKeyPath() throws {
+        let person = Person(36)
+        let rule = GreaterThanRule(person, keyPath: \.age, error: error)
+        
+        try rule.validate(nil)
+    }
+    
     @Test func mustBeValidWhenValueIsGreather() throws {
         let rule = GreaterThanRule<Any, Int>(100, error: error)
         try rule.validate(101)
