@@ -2,17 +2,17 @@ import Testing
 
 @testable import Formidable
 
-struct GranThanRuleTests {
+struct GreaterThanRuleTests {
  
     private let error = TestError.valueAreNotGreather
     
     @Test func mustBeValidWhenValueIsGreather() throws {
-        let rule = GreatherThanRule<Any, Int>(100, error: error)
+        let rule = GreaterThan<Any, Int>(100, error: error)
         try rule.validate(101)
     }
     
     @Test func mustBeInvalidWhenValueIsNotGreather() {
-        let rule = GreatherThanRule<Any, Int>(10, error: error)
+        let rule = GreaterThan<Any, Int>(10, error: error)
 
         #expect(throws: error) {
             try rule.validate(9)
@@ -21,7 +21,7 @@ struct GranThanRuleTests {
     
     @Test func mustBeValidWhenKeyPathValueIsGreather() throws {
         let person = Person(36)
-        let rule = GreatherThanRule(person, keyPath: \.age, error: error)
+        let rule = GreaterThan(person, keyPath: \.age, error: error)
         
         try rule.validate(37)
     }
