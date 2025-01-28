@@ -2,43 +2,43 @@ import Testing
 
 @testable import Formidable
 
-struct LessThanOrEqualRuleTests {
+struct LessThanRuleTests {
  
-    private let error = TestError.valueAreNotLessOrEqual
+    private let error = TestError.valueAreNotLess
     
-    @Test func mustBeValidWhenValueIsLessOrEqual() throws {
-        let rule = LessThanOrEqualRule<Any, Int>(20, error: error)
-        try rule.validate(20)
+    @Test func mustBeValidWhenValueIsLess() throws {
+        let rule = LessThanRule<Any, Int>(20, error: error)
         try rule.validate(19)
     }
     
-    @Test func mustBeInvalidWhenValueIsNotLessOrEqual() {
-        let rule = LessThanOrEqualRule<Any, Int>(10, error: error)
+    @Test func mustBeInvalidWhenValueIsNotLess() {
+        let rule = LessThanRule<Any, Int>(10, error: error)
 
         #expect(throws: error) {
             try rule.validate(11)
         }
     }
     
-    @Test func mustBeValidWhenKeyPathValueIsLess() throws {
+    @Test func mustBeValidWhenKeyPathValueIsLessOrEqual() throws {
         let person = Person(36)
-        let rule = LessThanRule(person, keyPath: \.age, error: error)
+        let rule = LessThanOrEqualRule(person, keyPath: \.age, error: error)
         
+        try rule.validate(36)
         try rule.validate(35)
     }
     
-    @Test func mustBeInvalidWhenKeyPathValueIsNotLess() throws {
+    @Test func mustBeInvalidWhenKeyPathValueIsNotLessOrEqual() throws {
         let person = Person(36)
-        let rule = LessThanRule(person, keyPath: \.age, error: error)
+        let rule = LessThanOrEqualRule(person, keyPath: \.age, error: error)
         
         #expect(throws: error) {
             try rule.validate(37)
         }
     }
     
-    @Test func mustBeValidWhenKeyPathValueIsLessUsingTransformer() throws {
+    @Test func mustBeValidWhenKeyPathValueIsLessOrEqualUsingTransformer() throws {
         let person = Person(40)
-        let rule = LessThanRule(
+        let rule = LessThanOrEqualRule(
             person,
             keyPath: \.age,
             transform: { $0 + 1 },
@@ -46,11 +46,12 @@ struct LessThanOrEqualRuleTests {
         )
         
         try rule.validate(40)
+        try rule.validate(41)
     }
     
-    @Test func mustBeInvalidWhenKeyPathValueIsNotLessUsingTransformer() throws {
+    @Test func mustBeInvalidWhenKeyPathValueIsNotLessOrEqualUsingTransformer() throws {
         let person = Person(40)
-        let rule = LessThanRule(
+        let rule = LessThanOrEqualRule(
             person,
             keyPath: \.age,
             transform: { $0 - 1 },

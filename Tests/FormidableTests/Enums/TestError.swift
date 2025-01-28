@@ -8,6 +8,7 @@
 enum TestError: Error, Equatable {
     case valuesAreNotEqual
     case valueAreNotGreater
-    case valueAreNotMinor
+    case valueAreNotLess
+    case valueAreNotLessOrEqual
 }
 
