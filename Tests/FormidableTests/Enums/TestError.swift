@@ -6,6 +6,7 @@
 //
 
 enum TestError: Error, Equatable {
+    case valueIsRequired
     case valuesAreNotEqual
     case valueAreNotGreater
     case valueAreNotLess
