@@ -12,6 +12,6 @@ enum TestError: Error, Equatable {
     case valueAreNotLess
     case valueAreNotLessThanOrEqual
     case valueAreNotGreaterThanOrEqual
-    case valueNotIsUnique
+    case valueAlreadyExists
 }
 
