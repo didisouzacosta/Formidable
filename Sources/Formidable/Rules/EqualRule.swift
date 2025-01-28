@@ -1,85 +1,94 @@
 //
-//  UniqueRule.swift
+//  EqualRule.swift
 //  Formidable
 //
 //  Created by Adriano Costa on 26/01/25.
 //
 
-/// A validation rule that ensures a given value does not exist in a reference collection.
+/// A validation rule that ensures a value is equal to a specified reference value.
 ///
-/// The `UniqueRule` is used to validate that a value is unique within a static or dynamic collection.
-/// This is particularly useful for enforcing uniqueness constraints in forms, such as ensuring that
-/// usernames or email addresses are not duplicated.
+/// The `EqualRule` compares a given value against either a static reference value or a value retrieved
+/// dynamically using a `KeyPath` from a reference object. The rule throws the provided error if the values
+/// do not match.
 ///
-/// - Generics:
-///   - `Root`: The type of the object containing the reference collection when using a dynamic reference.
-///   - `Value`: The type of the value to validate, which must conform to `Equatable`.
-public struct UniqueRule<Root, Value: Equatable>: FormFieldRule {
-    
-    public typealias Items = [Value]
+/// - Generic Parameters:
+///   - `Root`: The type of the root object for the `KeyPath` when using a dynamic reference value.
+///   - `Value`: The type of the values being compared, which must conform to `Equatable`.
+///
+/// ## Example Usage
+///
+/// ### Comparing to a Static Value
+/// ```swift
+/// enum ValidationError: Error {
+///     case notEqual
+/// }
+///
+/// let rule = EqualRule(staticValue: 10, error: ValidationError.notEqual)
+///
+/// do {
+///     try rule.validate(10) // Passes
+///     try rule.validate(5) // Throws ValidationError.notEqual
+/// } catch {
+///     print("Validation failed: \(error)")
+/// }
+/// ```
+///
+/// ### Comparing to a Dynamic Value via KeyPath
+/// ```swift
+/// struct Settings {
+///     let maxValue: Int
+/// }
+///
+/// let settings = Settings(maxValue: 100)
+/// let rule = EqualRule(referenceRoot: settings, keyPath: \.maxValue, error: ValidationError.notEqual)
+///
+/// do {
+///     try rule.validate(100) // Passes
+///     try rule.validate(50) // Throws ValidationError.notEqual
+/// } catch {
+///     print("Validation failed: \(error)")
+/// }
+/// ```
+public struct EqualRule<Root, Value: Equatable>: FormFieldRule {
     
     // MARK: - Private Properties
     
-    private let reference: ReferenceValue<Items, Root>
+    /// The source of the reference value.
+    private let reference: ReferenceValue<Value, Root>
+    
+    /// The object that contains the reference value when using a `KeyPath`.
     private let referenceRoot: Root?
-    private let transform: ((Items) -> Items)?
+    
+    /// An optional closure to transform the reference value before comparison.
+    private let transform: ((Value) -> Value)?
+    
+    /// The error to throw when validation fails.
     private let error: Error
     
     // MARK: - Initializers
     
-    /// Creates a rule that validates a value against a static reference collection.
+    /// Creates a rule that validates a value against a static reference value.
     ///
     /// - Parameters:
-    ///   - items: The static collection of values to compare against.
+    ///   - staticValue: The static reference value to compare against.
     ///   - error: The error to throw if validation fails.
-    ///
-    /// - Example:
-    ///   ```swift
-    ///   let existingEmails = ["test@example.com", "user@example.com"]
-    ///   let rule = UniqueRule(in: existingEmails, error: ValidationError.duplicateEmail)
-    ///
-    ///   do {
-    ///       try rule.validate("new@example.com") // Passes validation
-    ///       try rule.validate("test@example.com") // Throws ValidationError.duplicateEmail
-    ///   } catch {
-    ///       print(error)
-    ///   }
-    ///   ```
-    public init(in items: Items, error: Error) {
-        self.reference = .staticValue(items)
+    public init(_ staticValue: Value, error: Error) {
+        self.reference = .staticValue(staticValue)
         self.referenceRoot = nil
         self.transform = nil
         self.error = error
     }
     
-    /// Creates a rule that validates a value against a dynamic reference collection.
+    /// Creates a rule that validates a value against a dynamic reference value.
     ///
     /// - Parameters:
-    ///   - referenceRoot: The object containing the dynamic reference collection.
-    ///   - keyPath: A `KeyPath` to the reference collection on the `referenceRoot`.
-    ///   - transform: An optional closure to transform the reference collection before comparison.
+    ///   - referenceRoot: The object containing the dynamic reference value.
+    ///   - keyPath: A `KeyPath` to the reference value on the `referenceRoot`.
     ///   - error: The error to throw if validation fails.
-    ///
-    /// - Example:
-    ///   ```swift
-    ///   struct UserDatabase {
-    ///       var existingUsernames: [String] = ["user1", "user2"]
-    ///   }
-    ///
-    ///   let database = UserDatabase()
-    ///   let rule = UniqueRule(database, keyPath: \.existingUsernames, error: ValidationError.duplicateUsername)
-    ///
-    ///   do {
-    ///       try rule.validate("newUser") // Passes validation
-    ///       try rule.validate("user1")  // Throws ValidationError.duplicateUsername
-    ///   } catch {
-    ///       print(error)
-    ///   }
-    ///   ```
     public init(
         _ referenceRoot: Root,
-        keyPath: KeyPath<Root, Items>,
-        transform: ((Items) -> Items)? = nil,
+        keyPath: KeyPath<Root, Value>,
+        transform: ((Value) -> Value)? = nil,
         error: Error
     ) {
         self.reference = .keyPath(keyPath)
@@ -90,14 +99,15 @@ public struct UniqueRule<Root, Value: Equatable>: FormFieldRule {
     
     // MARK: - Public Methods
     
-    /// Validates that the given value does not exist in the reference collection.
+    /// Validates that the given value is equal to the reference value.
     ///
     /// - Parameter value: The value to validate.
-    /// - Throws: The specified error if the value exists in the reference collection.
+    /// - Throws: The specified error if the value does not match the reference value.
     public func validate(_ value: Value?) throws {
         guard let value else { return }
         
-        let referenceValue: Items
+        // Retrieve the reference value
+        let referenceValue: Value
         
         switch reference {
         case .staticValue(let staticValue):
@@ -109,15 +119,14 @@ public struct UniqueRule<Root, Value: Equatable>: FormFieldRule {
             referenceValue = referenceRoot[keyPath: keyPath]
         }
         
+        // Apply the transformer if available
         let referenceValueTransformed = transform?(referenceValue) ?? referenceValue
         
-        if referenceValueTransformed.contains(value) {
+        // Perform the comparison
+        if value != referenceValueTransformed {
             throw error
         }
     }
     
 }
-
-
-
 
