@@ -15,8 +15,8 @@ struct FormFieldContainer<Content: View, Form: FormFieldRepresentable>: View {
     
     private let content: () -> Content
     
-    private var errors: [Error] {
-        field.showErrors ? field.errors : []
+    private var messages: [String] {
+        (field.showErrors ? field.errors : []).map { $0.localizedDescription }
     }
     
     // MARK: - Life Cycle
@@ -32,7 +32,18 @@ struct FormFieldContainer<Content: View, Form: FormFieldRepresentable>: View {
     var body: some View {
         VStack(alignment: .leading) {
             content()
-            TextErrors(field.showErrors ? field.errors : [])
+            
+            if !messages.isEmpty {
+                VStack(alignment: .leading) {
+                    ForEach(Array(zip(messages.indices, messages)), id: \.0) { index, message in
+                        Text(message)
+                            .accessibilityLabel(message)
+                            .id(index)
+                    }
+                }
+                .font(.callout)
+                .foregroundStyle(.red)
+            }
         }
         .disabled(field.isDisabled)
         .isHidden(field.isHidden)
