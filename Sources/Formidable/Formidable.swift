@@ -57,6 +57,12 @@ public extension Formidable {
         errors.isEmpty
     }
     
+    /// A computed property that indicates whether all form fields are modified
+    /// Returns `true` if there are modified, `false` otherwise.
+    var isModified: Bool {
+        fields.contains { $0.isModified }
+    }
+    
     /// A computed property that gathers all errors from the form fields.
     /// Returns an array of errors, with each error potentially coming from a different field.
     var errors: [Error] {

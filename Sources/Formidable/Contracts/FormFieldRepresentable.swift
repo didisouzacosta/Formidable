@@ -26,14 +26,20 @@ public protocol FormFieldRepresentable: ObservableObject {
 
 public extension FormFieldRepresentable {
     
+    /// A computed property that indicates if the field contains any error
+    /// Returns `true` if value not contains any errors, `false` otherwise.
     var isValid: Bool {
         errors.isEmpty
     }
     
+    /// A computed property that indicates if the value is modified
+    /// Returns `true` if value is modified, `false` otherwise.
     var isModified: Bool {
         originalValue != value
     }
     
+    /// A computed property that gathers all errors from the form field.
+    /// Returns an array of errors.
     var errors: [Error] {
         if isDisabled || isHidden {
             []
@@ -49,6 +55,7 @@ public extension FormFieldRepresentable {
         }
     }
     
+    /// Resets field in the form to initial value, clearing any errors.
     func reset() {
         value = originalValue
         showErrors = false
