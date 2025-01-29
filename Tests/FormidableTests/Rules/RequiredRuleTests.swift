@@ -16,6 +16,7 @@ struct RequiredRuleTests {
         try rule.validate(Date.now)
         try rule.validate(36)
         try rule.validate(36.9)
+        try rule.validate(Float(2.2))
         try rule.validate(-100)
         try rule.validate(0)
     }
