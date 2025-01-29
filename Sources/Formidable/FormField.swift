@@ -32,14 +32,14 @@ import SwiftUI
 /// let formField = FormField(
 ///     3,
 ///     rules: [GreaterThanRule(staticValue: 5, error: ValidationError.invalidValue)],
-///     valueChanged: { oldValue, newValue in
+///     valueChange: { oldValue, newValue in
 ///         print("Value changed from \(oldValue) to \(newValue)")
 ///     }
 /// )
 ///
 /// formField.isValid = false // Invalid
 ///
-/// formField.value = 15 // Triggers `valueChanged` callback
+/// formField.value = 15 // Triggers `valueChange` callback
 ///
 ///  formField.isValid = true // Valid
 /// ```
@@ -72,7 +72,7 @@ public final class FormField<Value: Equatable>: FormFieldRepresentable {
     /// - Parameters:
     ///   - oldValue: The previous value of the field.
     ///   - newValue: The new value of the field.
-    public var valueChanged: ((Value, Value) -> Void)?
+    public var valueChange: ((Value, Value) -> Void)?
     
     /// Indicates whether validation errors should be shown.
     public var showErrors = false
@@ -91,7 +91,7 @@ public final class FormField<Value: Equatable>: FormFieldRepresentable {
     private var _value: Value {
         didSet {
             guard oldValue != value else { return }
-            valueChanged?(oldValue, value)
+            valueChange?(oldValue, value)
             showErrors = true
         }
     }
@@ -106,7 +106,7 @@ public final class FormField<Value: Equatable>: FormFieldRepresentable {
     ///   - isDisabled: A flag indicating whether the field is initially disabled. Defaults to `false`.
     ///   - rules: A collection of validation rules to apply to the field's value. Defaults to an empty array.
     ///   - transform: An optional closure to transform the field's value dynamically. Defaults to `nil`.
-    ///   - valueChanged: A closure triggered whenever the field's value changes. Defaults to `nil`.
+    ///   - valueChange: A closure triggered whenever the field's value changes. Defaults to `nil`.
     public init(
         _ value: Value,
         isHidden: Bool = false,
@@ -121,7 +121,8 @@ public final class FormField<Value: Equatable>: FormFieldRepresentable {
         self.originalValue = value
         self.rules = rules
         self.transform = transform
-        self.valueChanged = valueChanged
+        self.valueChange = valueChanged
     }
+    
 }
 
