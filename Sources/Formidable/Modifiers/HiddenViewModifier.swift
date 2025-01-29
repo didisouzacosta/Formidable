@@ -24,9 +24,7 @@ struct HiddenViewModifier: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        if isHidden {
-            EmptyView()
-        } else {
+        if !isHidden {
             content
         }
     }
