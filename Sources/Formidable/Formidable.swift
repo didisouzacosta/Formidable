@@ -31,7 +31,6 @@ import SwiftUI
 ///
 /// form.reset() // Resets the form fields to their original values
 /// ```
-@MainActor
 public protocol Formidable: ObservableObject {}
 
 public extension Formidable {
