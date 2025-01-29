@@ -2,39 +2,39 @@ import Testing
 
 @testable import Formidable
 
-struct MinLengthRuleTests {
+struct MaxLengthRuleTests {
  
     private let error = TestError.minLength
     
     @Test func mustBeValidWhenValueIsNil() throws {
-        let rule = MinLengthRule<Any, Int>(in: 10, error: error)
+        let rule = MaxLengthRule<Any, Int>(in: 10, error: error)
         
         try rule.validate(nil)
     }
     
     @Test func mustBeValidWhenKeyPathValueIsNil() throws {
         let game = Game(36)
-        let rule = MinLengthRule(game, keyPath: \.rating, error: error)
+        let rule = MaxLengthRule(game, keyPath: \.rating, error: error)
         
         try rule.validate(nil)
     }
     
-    @Test func mustBeInValidWhenValueLengthIsLessThanTheReference() throws {
-        let rule = MinLengthRule<Any, Int>(in: 10, error: error)
+    @Test func mustBeInValidWhenValueLengthIsGreaterThanTheReference() throws {
+        let rule = MaxLengthRule<Any, Int>(in: 10, error: error)
         
         #expect(throws: error) {
-            try rule.validate(9)
+            try rule.validate(11)
         }
         
         try rule.validate(10)
     }
     
-    @Test func mustBeValidWhenKeyPathValueLengthIsLessThanTheReference() throws {
+    @Test func mustBeValidWhenKeyPathValueLengthIsGreaterThanTheReference() throws {
         let game = Game(36)
-        let rule = MinLengthRule(game, keyPath: \.rating, error: error)
+        let rule = MaxLengthRule(game, keyPath: \.rating, error: error)
         
         #expect(throws: error) {
-            try rule.validate(33)
+            try rule.validate(37)
         }
         
         try rule.validate(36)
