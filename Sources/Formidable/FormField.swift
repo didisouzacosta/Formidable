@@ -118,7 +118,7 @@ public final class FormField<Value: Equatable>: FormFieldRepresentable {
         self._value = value
         self.isHidden = isHidden
         self.isDisabled = isDisabled
-        self.originalValue = value
+        self.originalValue = transform?(value) ?? value
         self.rules = rules
         self.transform = transform
         self.valueChange = valueChanged

@@ -1,15 +1,15 @@
 //
-//  FormFieldTests.swift
+//  FormTests.swift
 //  Formidable
 //
-//  Created by Adriano Costa on 28/01/25.
+//  Created by Adriano Costa on 29/01/25.
 //
 
 import Testing
 
 @testable import Formidable
 
-struct FormFieldTests {
+struct FormTests {
     
     @Test func ensureDefaultProperties() throws {
         let field = FormField(44)
@@ -94,14 +94,6 @@ struct FormFieldTests {
         #expect(field.originalValue == 36)
         #expect(field.value == 40)
         #expect(field.isModified == true)
-    }
-    
-    @Test func ensureValueTransformOnInit() {
-        let field = FormField(36, transform: { $0 + 4 })
-        
-        #expect(field.originalValue == 40)
-        #expect(field.value == 40)
-        #expect(field.isModified == false)
     }
     
     @Test func ensureValueChangedHandlerConsistency() {
