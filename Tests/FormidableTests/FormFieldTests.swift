@@ -55,7 +55,7 @@ struct FormFieldTests {
     
     @Test func isValidMustBeChangeAfterSetInvalidValue() throws {
         let field = FormField("Orlando")
-        field.rules = [RequiredRule(TestError.valueIsRequired)]
+        field.rules = [RequiredRule(TestError.isRequired)]
         
         #expect(field.isValid == true)
         
@@ -63,7 +63,7 @@ struct FormFieldTests {
         
         #expect(field.isValid == false)
         #expect(field.errors.count == 1)
-        #expect(field.errors.first?.localizedDescription == TestError.valueIsRequired.localizedDescription)
+        #expect(field.errors.first?.localizedDescription == TestError.isRequired.localizedDescription)
         
         field.rules = []
         
@@ -73,7 +73,7 @@ struct FormFieldTests {
     
     @Test func disabledFieldsMustAlwaysBeValid() throws {
         let field = FormField("Orlando")
-        field.rules = [RequiredRule(TestError.valueIsRequired)]
+        field.rules = [RequiredRule(TestError.isRequired)]
         field.isDisabled = true
         
         #expect(field.isValid == true)
@@ -81,7 +81,7 @@ struct FormFieldTests {
     
     @Test func hiddenFieldsMustAlwaysBeValid() throws {
         let field = FormField("Orlando")
-        field.rules = [RequiredRule(TestError.valueIsRequired)]
+        field.rules = [RequiredRule(TestError.isRequired)]
         field.isHidden = true
         
         #expect(field.isValid == true)

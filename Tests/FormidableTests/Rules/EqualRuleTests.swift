@@ -4,7 +4,7 @@ import Testing
 
 struct EqualRuleTests {
  
-    private let error = TestError.valuesAreNotEqual
+    private let error = TestError.areNotEqual
     
     @Test func mustBeValidWhenValidateValueIsNil() throws {
         let rule = EqualRule<Any, Int>(10, error: error)

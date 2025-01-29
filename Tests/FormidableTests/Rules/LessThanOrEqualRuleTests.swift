@@ -4,7 +4,7 @@ import Testing
 
 struct LessThanOrEqualRuleTests {
  
-    private let error = TestError.valueAreNotLessThanOrEqual
+    private let error = TestError.areNotLessThanOrEqual
     
     @Test func mustBeValidWhenValidateValueIsNil() throws {
         let rule = LessThanOrEqualRule<Any, Int>(20, error: error)

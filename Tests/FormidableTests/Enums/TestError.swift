@@ -6,12 +6,14 @@
 //
 
 enum TestError: Error, Equatable {
-    case valueIsRequired
-    case valuesAreNotEqual
-    case valueAreNotGreater
-    case valueAreNotLess
-    case valueAreNotLessThanOrEqual
-    case valueAreNotGreaterThanOrEqual
-    case valueAlreadyExists
+    case isRequired
+    case areNotEqual
+    case areNotGreater
+    case areNotLess
+    case areNotLessThanOrEqual
+    case areNotGreaterThanOrEqual
+    case alreadyExists
+    case minLength
+    case maxLength
 }
 

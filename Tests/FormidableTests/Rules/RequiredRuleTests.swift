@@ -5,7 +5,7 @@ import SwiftUI
 
 struct RequiredRuleTests {
  
-    private let error = TestError.valueIsRequired
+    private let error = TestError.isRequired
     
     @Test func mustBeValidWhenValidateValueIsNotNil() throws {
         let rule = RequiredRule(error)
