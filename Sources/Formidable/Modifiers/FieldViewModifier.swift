@@ -9,7 +9,7 @@ import SwiftUI
 
 public extension View {
     
-    func field<Value: Equatable>(_ field: Binding<FormFieldValue<Value>>) -> some View {
+    func field<Value: Equatable>(_ field: Binding<FormField<Value>>) -> some View {
         modifier(FieldViewModifier(field))
     }
     
@@ -17,9 +17,9 @@ public extension View {
 
 public struct FieldViewModifier<Value: Equatable>: ViewModifier {
     
-    private let field: Binding<FormFieldValue<Value>>
+    private let field: Binding<FormField<Value>>
     
-    public init(_ field: Binding<FormFieldValue<Value>>) {
+    public init(_ field: Binding<FormField<Value>>) {
         self.field = field
     }
     

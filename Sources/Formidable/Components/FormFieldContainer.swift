@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FormFieldContainer<Content: View, Form: FormField>: View {
+struct FormFieldContainer<Content: View, Form: FormFieldRepresentable>: View {
     
     // MARK: - Private Variables
     

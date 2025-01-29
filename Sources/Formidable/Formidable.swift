@@ -70,8 +70,8 @@ public extension Formidable {
     /// Uses reflection to find properties that conform to the `FormField` protocol.
     ///
     /// - Returns: An array of form fields that are part of the conforming object.
-    var fields: [any FormField] {
-        Mirror(reflecting: self).children.compactMap { $0.value as? any FormField }
+    var fields: [any FormFieldRepresentable] {
+        Mirror(reflecting: self).children.compactMap { $0.value as? any FormFieldRepresentable }
     }
 }
 

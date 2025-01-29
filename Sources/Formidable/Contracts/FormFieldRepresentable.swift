@@ -1,5 +1,5 @@
 //
-//  FormField.swift
+//  FormFieldRepresentable.swift
 //  Formidable
 //
 //  Created by Adriano Costa on 24/01/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public protocol FormField: ObservableObject {
+public protocol FormFieldRepresentable: ObservableObject {
     
     associatedtype Value: Equatable
     
@@ -24,7 +24,7 @@ public protocol FormField: ObservableObject {
     
 }
 
-public extension FormField {
+public extension FormFieldRepresentable {
     
     var isValid: Bool {
         errors.isEmpty

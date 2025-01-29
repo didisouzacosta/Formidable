@@ -1,5 +1,5 @@
 //
-//  FormFieldValue.swift
+//  FormField.swift
 //  Formidable
 //
 //  Created by Adriano Costa on 23/01/25.
@@ -9,7 +9,7 @@ import SwiftUI
 
 /// A generic class representing a form field with observable capabilities.
 ///
-/// `FormFieldValue` is designed to manage the state, validation, and transformation of a form field's value.
+/// `FormField` is designed to manage the state, validation, and transformation of a form field's value.
 /// It supports observing changes to the value, applying validation rules, and transforming the value dynamically.
 ///
 /// - Generic Parameter:
@@ -29,7 +29,7 @@ import SwiftUI
 ///     case invalidValue
 /// }
 ///
-/// let formField = FormFieldValue(
+/// let formField = FormField(
 ///     3,
 ///     rules: [GreaterThanRule(staticValue: 5, error: ValidationError.invalidValue)],
 ///     valueChanged: { oldValue, newValue in
@@ -45,14 +45,14 @@ import SwiftUI
 /// ```
 ///
 /// ## Observability
-/// The `@Observable` attribute enables observing changes to the `FormFieldValue` instance directly.
+/// The `@Observable` attribute enables observing changes to the `FormField` instance directly.
 ///
 /// ## Use Cases
 /// - Dynamic forms requiring value validation.
 /// - Fields with conditional visibility or enabled state.
 /// - Fields needing dynamic transformation of input values.
 @Observable
-public final class FormFieldValue<Value: Equatable>: FormField {
+public final class FormField<Value: Equatable>: FormFieldRepresentable {
     
     // MARK: - Public Variables
     
