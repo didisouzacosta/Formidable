@@ -108,44 +108,4 @@ public struct RequiredRule: FormFieldRule {
     
 }
 
-public protocol Emptable {
-    var isEmpty: Bool { get }
-}
-
-extension String: Emptable {}
-extension Data: Emptable {}
-extension Array: Emptable {}
-
-extension Int: Emptable {
-    
-    public var isEmpty: Bool {
-        false
-    }
-    
-}
-
-extension Double: Emptable {
-    
-    public var isEmpty: Bool {
-        false
-    }
-    
-}
-
-extension Float: Emptable {
-    
-    public var isEmpty: Bool {
-        false
-    }
-    
-}
-
-extension Date: Emptable {
-    
-    public var isEmpty: Bool {
-        false
-    }
-    
-}
-
 
