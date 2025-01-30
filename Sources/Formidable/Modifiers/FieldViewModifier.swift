@@ -9,8 +9,11 @@ import SwiftUI
 
 public extension View {
     
-    func field<Value: Equatable>(_ field: Binding<FormField<Value>>) -> some View {
-        modifier(FieldViewModifier(field))
+    func field<Value: Equatable>(
+        _ field: Binding<FormField<Value>>,
+        accessibilityLabel: String = "Field errors"
+    ) -> some View {
+        modifier(FieldViewModifier(field, accessibilityLabel: accessibilityLabel))
     }
     
 }
@@ -18,9 +21,14 @@ public extension View {
 public struct FieldViewModifier<Value: Equatable>: ViewModifier {
     
     private let field: Binding<FormField<Value>>
+    private let accessibilityLabel: String
     
-    public init(_ field: Binding<FormField<Value>>) {
+    public init(
+        _ field: Binding<FormField<Value>>,
+        accessibilityLabel: String
+    ) {
         self.field = field
+        self.accessibilityLabel = accessibilityLabel
     }
     
     public func body(content: Content) -> some View {
