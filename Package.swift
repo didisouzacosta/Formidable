@@ -12,10 +12,11 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Formidable"),
+            name: "Formidable"
+        ),
         .testTarget(
             name: "FormidableTests",
             dependencies: ["Formidable"]
-        ),
+        )
     ]
 )

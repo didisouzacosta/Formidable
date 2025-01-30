@@ -14,7 +14,6 @@
 ///
 /// # Example Usage
 ///
-/// **Using a static collection:**
 /// ```swift
 /// let existingEmails = ["test@example.com", "user@example.com"]
 /// let rule = UniqueRule(in: existingEmails, error: ValidationError.duplicateEmail)
@@ -27,7 +26,6 @@
 /// }
 /// ```
 ///
-/// **Using a dynamic collection with KeyPath:**
 /// ```swift
 /// struct UserDatabase {
 ///     var existingUsernames: [String] = ["user1", "user2"]
