@@ -13,7 +13,12 @@ public extension View {
         _ field: Binding<FormField<Value>>,
         accessibilityLabel: String = "Field errors"
     ) -> some View {
-        modifier(FieldViewModifier(field, accessibilityLabel: accessibilityLabel))
+        modifier(
+            FieldViewModifier(
+                field,
+                accessibilityLabel: accessibilityLabel
+            )
+        )
     }
     
 }
@@ -32,7 +37,10 @@ public struct FieldViewModifier<Value: Equatable>: ViewModifier {
     }
     
     public func body(content: Content) -> some View {
-        FormFieldContainer(field) {
+        FormFieldContainer(
+            field,
+            accessibilityLabel: accessibilityLabel
+        ) {
             content
         }
     }

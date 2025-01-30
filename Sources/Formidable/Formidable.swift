@@ -78,5 +78,6 @@ public extension Formidable {
     var fields: [any FormFieldRepresentable] {
         Mirror(reflecting: self).children.compactMap { $0.value as? any FormFieldRepresentable }
     }
+    
 }
 
