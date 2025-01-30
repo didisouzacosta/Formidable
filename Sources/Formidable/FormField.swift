@@ -96,7 +96,7 @@ public final class FormField<Value: Equatable>: FormFieldRepresentable {
         }
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Initializers
     
     /// Initializes a new form field with the given parameters.
     ///

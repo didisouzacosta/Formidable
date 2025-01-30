@@ -11,18 +11,32 @@ import SwiftUI
 /// ## Example Usage
 ///
 /// ```swift
+///
+/// enum ValidationError: Error {
+///     case isRequired
+/// }
+///
 /// @Observable
 /// struct UserForm: Formidable {
+///
 ///     var name: FormFieldValue<String>
 ///     var age: FormFieldValue<Int>
 ///
-///     init(name: String, age: Int) {
+///     init(_ name: String, age: Int) {
 ///         self.name = FormFieldValue(name)
 ///         self.age = FormFieldValue(age)
 ///     }
+///
+///     func setupRules() {
+///         name.rules = [RequiredRule(ValidationError.isRequired)]
+///     }
+///
 /// }
 ///
-/// let form = UserForm(name: "John", age: 30)
+/// let form = UserForm("John", age: 30)
+///
+/// TextField("Name", text: $form.name)
+///
 /// do {
 ///     try form.validate() // Throws error if any field validation fails
 /// } catch {
