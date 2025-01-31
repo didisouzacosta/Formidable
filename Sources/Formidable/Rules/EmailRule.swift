@@ -2,7 +2,7 @@
 //  EmailRule.swift
 //  Formidable
 //
-//  Created by Adriano Costa on 26/01/25.
+//  Created by Adriano Costa on 31/01/25.
 //
 
 import Foundation

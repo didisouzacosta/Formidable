@@ -67,7 +67,7 @@ public struct MinLengthRule<Root, Value: Mensurable>: FormFieldRule {
         
         let referenceValueTransformed = transform?(referenceValue) ?? referenceValue
         
-        if referenceValueTransformed.length < value.length {
+        if value.length < referenceValueTransformed.length {
             throw error
         }
     }
