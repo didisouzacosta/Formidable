@@ -40,7 +40,7 @@ struct FormFieldContainer<Content: View, Form: FormFieldRepresentable>: View {
             if !messages.isEmpty {
                 VStack(alignment: .leading) {
                     ForEach(Array(zip(messages.indices, messages)), id: \.0) { index, message in
-                        Text(message)
+                        Text("• " + message)
                             .id(index)
                     }
                 }

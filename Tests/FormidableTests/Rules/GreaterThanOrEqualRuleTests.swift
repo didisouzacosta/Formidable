@@ -7,74 +7,23 @@ struct GreaterThanOrEqualRuleTests {
     private let error = TestError.areNotGreaterThanOrEqual
     
     @Test func mustBeValidWhenValidateValueIsNil() throws {
-        let rule = GreaterThanOrEqualRule<Any, Int>(20, error: error)
-        
-        try rule.validate(nil)
-    }
-    
-    @Test func mustBeValidWhenValidateValueIsNilUsingKeyPath() throws {
-        let person = Person(36)
-        let rule = LessThanOrEqualRule(person, keyPath: \.age, error: error)
+        let rule = GreaterThanOrEqualRule(20, error: error)
         
         try rule.validate(nil)
     }
     
     @Test func mustBeValidWhenValueIsGreaterThanOrEqual() throws {
-        let rule = GreaterThanOrEqualRule<Any, Int>(20, error: error)
+        let rule = GreaterThanOrEqualRule(20, error: error)
         
         try rule.validate(21)
         try rule.validate(20)
     }
     
     @Test func mustBeInvalidWhenValueIsNotGreaterThanOrEqual() {
-        let rule = GreaterThanOrEqualRule<Any, Int>(10, error: error)
+        let rule = GreaterThanOrEqualRule(10, error: error)
 
         #expect(throws: error) {
             try rule.validate(9)
-        }
-    }
-    
-    @Test func mustBeValidWhenKeyPathValueIsGreaterThanOrEqual() throws {
-        let person = Person(36)
-        let rule = LessThanOrEqualRule(person, keyPath: \.age, error: error)
-        
-        try rule.validate(35)
-        try rule.validate(36)
-    }
-    
-    @Test func mustBeInvalidWhenKeyPathValueIsNotGreaterThanOrEqual() throws {
-        let person = Person(36)
-        let rule = LessThanOrEqualRule(person, keyPath: \.age, error: error)
-        
-        #expect(throws: error) {
-            try rule.validate(37)
-        }
-    }
-    
-    @Test func mustBeValidWhenKeyPathValueIsGreaterThanOrEqualUsingTransformer() throws {
-        let person = Person(40)
-        let rule = GreaterThanOrEqualRule(
-            person,
-            keyPath: \.age,
-            transform: { $0 + 1 },
-            error: error
-        )
-        
-        try rule.validate(41)
-        try rule.validate(42)
-    }
-    
-    @Test func mustBeInvalidWhenKeyPathValueIsNotGreaterThanOrEqualUsingTransformer() throws {
-        let person = Person(40)
-        let rule = LessThanRule(
-            person,
-            keyPath: \.age,
-            transform: { $0 - 1 },
-            error: error
-        )
-        
-        #expect(throws: error) {
-            try rule.validate(40)
         }
     }
     

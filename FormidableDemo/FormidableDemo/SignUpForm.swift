@@ -51,7 +51,7 @@ final class SignUpForm: Formidable {
         
         passwordField.rules = [
             RequiredRule(ValidationError.isRequired),
-            MinLengthRule<Any>(in: 3, error: ValidationError.minor)
+            MinLengthRule(in: 3, error: ValidationError.minLengthPassword)
         ]
         
         birthField.rules = [RequiredRule(ValidationError.isRequired)]
@@ -66,13 +66,15 @@ extension SignUpForm {
         case alreadyExists
         case weakPassword
         case minor
+        case minLengthPassword
         
         var errorDescription: String? {
             switch self {
-            case .isRequired: "This value must not be empty."
-            case .alreadyExists: "This value already exists."
-            case .weakPassword: "Input a strong password."
-            case .minor: "You must be 18 years of age or older"
+            case .isRequired: "• This field must not be empty."
+            case .alreadyExists: "• This field already exists."
+            case .weakPassword: "• Input a strong password."
+            case .minor: "• You must be 18 years of age or older."
+            case .minLengthPassword: "• This field must be at least 3 characters long."
             }
         }
     }
