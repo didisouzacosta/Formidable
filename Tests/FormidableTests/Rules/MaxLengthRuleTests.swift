@@ -2,60 +2,60 @@ import Testing
 
 @testable import Formidable
 
-struct MinLengthRuleTests {
+struct MaxLengthRuleTests {
  
     private let error = TestError.minLength
     
     @Test func mustBeValidWhenValidateValueIsNil() throws {
-        let rule = MinLengthRule<Any, Int>(in: 10, error: error)
+        let rule = MaxLengthRule<Any, Int>(in: 10, error: error)
         
         try rule.validate(nil)
     }
     
     @Test func mustBeValidWhenValidateValueIsNilUsingKeyPath() throws {
         let game = Game(10)
-        let rule = MinLengthRule(game, keyPath: \.rating, error: error)
+        let rule = MaxLengthRule(game, keyPath: \.rating, error: error)
         
         try rule.validate(nil)
     }
     
-    @Test func mustBeValidWhenValueIsGraterThanOrEqualReferenceValue() throws {
-        let rule = MinLengthRule<Any, Int>(in: 10, error: error)
+    @Test func mustBeValidWhenValueIsLessThanOrEqualReferenceValue() throws {
+        let rule = MaxLengthRule<Any, Int>(in: 10, error: error)
         
-        try rule.validate(11)
         try rule.validate(10)
+        try rule.validate(9)
     }
     
-    @Test func mustBeInvalidWhenValueIsLessThanReferenceValue() throws {
-        let rule = MinLengthRule<Any, Int>(in: 10, error: error)
+    @Test func mustBeInvalidWhenValueIsGreaterThanReferenceValue() throws {
+        let rule = MaxLengthRule<Any, Int>(in: 10, error: error)
         
         #expect(throws: error) {
-            try rule.validate(9)
+            try rule.validate(11)
         }
     }
     
-    @Test func mustBeValidWhenKeyPathValueIsGraterThanOrEqualReferenceValue() throws {
+    @Test func mustBeValidWhenKeyPathValueIsLessThanOrEqualReferenceValue() throws {
         let game = Game(10)
-        let rule = MinLengthRule(
+        let rule = MaxLengthRule(
             game,
             keyPath: \.rating,
             error: error
         )
         
-        try rule.validate(11)
         try rule.validate(10)
+        try rule.validate(9)
     }
     
-    @Test func mustBeInvalidWhenKeyPathValueIsLessThanReferenceValue() throws {
+    @Test func mustBeInvalidWhenKeyPathValueIsGreaterThanReferenceValue() throws {
         let game = Game(10)
-        let rule = MinLengthRule(
+        let rule = MaxLengthRule(
             game,
             keyPath: \.rating,
             error: error
         )
         
         #expect(throws: error) {
-            try rule.validate(2)
+            try rule.validate(11)
         }
     }
     
