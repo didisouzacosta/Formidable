@@ -47,7 +47,11 @@ final class SignUpForm: Formidable {
     
     private func setupRules() {
         nameField.rules = [RequiredRule(ValidationError.isRequired)]
-        emailField.rules = [RequiredRule(ValidationError.isRequired)]
+        
+        emailField.rules = [
+            EmailRule(ValidationError.validEmail),
+            RequiredRule(ValidationError.isRequired)
+        ]
         
         passwordField.rules = [
             RequiredRule(ValidationError.isRequired),
@@ -63,6 +67,7 @@ extension SignUpForm {
     
     enum ValidationError: LocalizedError {
         case isRequired
+        case validEmail
         case alreadyExists
         case weakPassword
         case minor
@@ -70,11 +75,12 @@ extension SignUpForm {
         
         var errorDescription: String? {
             switch self {
-            case .isRequired: "• This field must not be empty."
-            case .alreadyExists: "• This field already exists."
-            case .weakPassword: "• Input a strong password."
-            case .minor: "• You must be 18 years of age or older."
-            case .minLengthPassword: "• This field must be at least 3 characters long."
+            case .isRequired: "This field must not be empty."
+            case .validEmail: "This fild must be contains a valid email."
+            case .alreadyExists: "This field already exists."
+            case .weakPassword: "Input a strong password."
+            case .minor: "You must be 18 years of age or older."
+            case .minLengthPassword: "This field must be at least 3 characters long."
             }
         }
     }

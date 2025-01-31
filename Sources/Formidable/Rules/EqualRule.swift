@@ -5,88 +5,42 @@
 //  Created by Adriano Costa on 26/01/25.
 //
 
-/// A validation rule that ensures a value is equal to a specified reference value.
+/// A validation rule that ensures a given value is equal to a reference value.
 ///
-/// The `EqualRule` compares a given value against either a static reference value or a value retrieved
-/// dynamically using a `KeyPath` from a reference object. The rule throws the provided error if the values
-/// do not match.
+/// This rule checks whether the input value is **equal to** a specified reference value.
+/// If the input value is not equal to the reference value, the specified error is thrown.
 ///
-/// - Generic Parameters:
-///   - `Root`: The type of the root object for the `KeyPath` when using a dynamic reference value.
-///   - `Value`: The type of the values being compared, which must conform to `Equatable`.
-///
-/// ## Example Usage
-///
-/// ### Comparing to a Static Value
+/// # Example
 /// ```swift
-/// enum ValidationError: Error {
-///     case notEqual
-/// }
-///
-/// let rule = EqualRule(staticValue: 10, error: ValidationError.notEqual)
-///
+/// let rule = EqualRule(10, error: ValidationError.notEqual)
 /// do {
-///     try rule.validate(10) // Passes
-///     try rule.validate(5) // Throws ValidationError.notEqual
+///     try rule.validate(10)  // ✅ Valid (10 == 10)
+///     try rule.validate(5)   // ❌ Throws ValidationError.notEqual
 /// } catch {
 ///     print("Validation failed: \(error)")
 /// }
 /// ```
 ///
-/// ### Comparing to a Dynamic Value via KeyPath
-/// ```swift
-/// struct Settings {
-///     let maxValue: Int
-/// }
-///
-/// let settings = Settings(maxValue: 100)
-/// let rule = EqualRule(referenceRoot: settings, keyPath: \.maxValue, error: ValidationError.notEqual)
-///
-/// do {
-///     try rule.validate(100) // Passes
-///     try rule.validate(50) // Throws ValidationError.notEqual
-/// } catch {
-///     print("Validation failed: \(error)")
-/// }
-/// ```
-public struct EqualRule<Root, Value: Equatable>: FormFieldRule {
+/// # Notes
+/// - If the value is `nil`, validation passes automatically.
+/// - This rule ensures equality (`==`), comparing the values for strict equivalence.
+/// - Can be used for types conforming to `Equatable`.
+public struct EqualRule<Value: Equatable>: FormFieldRule {
     
     // MARK: - Private Properties
     
-    private let reference: ReferenceValue<Value, Root>
-    private let referenceRoot: Root!
-    private let transform: ((Value) -> Value)?
+    private let value: Value
     private let error: Error
     
     // MARK: - Initializers
     
-    /// Creates a rule that validates a value against a static reference value.
+    /// Creates a rule that ensures a value is equal to a reference value.
     ///
     /// - Parameters:
-    ///   - staticValue: The static reference value to compare against.
+    ///   - value: The reference value to compare against.
     ///   - error: The error to throw if validation fails.
-    public init(_ staticValue: Value, error: Error) {
-        self.reference = .staticValue(staticValue)
-        self.referenceRoot = nil
-        self.transform = nil
-        self.error = error
-    }
-    
-    /// Creates a rule that validates a value against a dynamic reference value.
-    ///
-    /// - Parameters:
-    ///   - referenceRoot: The object containing the dynamic reference value.
-    ///   - keyPath: A `KeyPath` to the reference value on the `referenceRoot`.
-    ///   - error: The error to throw if validation fails.
-    public init(
-        _ referenceRoot: Root,
-        keyPath: KeyPath<Root, Value>,
-        transform: ((Value) -> Value)? = nil,
-        error: Error
-    ) {
-        self.reference = .keyPath(keyPath)
-        self.referenceRoot = referenceRoot
-        self.transform = transform
+    public init(_ value: Value, error: Error) {
+        self.value = value
         self.error = error
     }
     
@@ -95,25 +49,15 @@ public struct EqualRule<Root, Value: Equatable>: FormFieldRule {
     /// Validates that the given value is equal to the reference value.
     ///
     /// - Parameter value: The value to validate.
-    /// - Throws: The specified error if the value does not match the reference value.
+    /// - Throws: The specified error if the value is not equal to the reference value.
     public func validate(_ value: Value?) throws {
         guard let value else { return }
         
-        let referenceValue: Value
-        
-        switch reference {
-        case .staticValue(let staticValue):
-            referenceValue = staticValue
-        case .keyPath(let keyPath):
-            referenceValue = referenceRoot[keyPath: keyPath]
-        }
-        
-        let referenceValueTransformed = transform?(referenceValue) ?? referenceValue
-        
-        if value != referenceValueTransformed {
+        if self.value != value {
             throw error
         }
     }
     
 }
+
 

@@ -5,88 +5,26 @@
 //  Created by Adriano Costa on 26/01/25.
 //
 
-/// A generic validation rule that ensures a value is less than or equal to a reference value.
+/// A validation rule that ensures a given value is less than or equal to a reference value.
 ///
-/// The reference value can be either:
-/// - A static value provided at initialization.
-/// - A dynamic value derived from a `KeyPath` on a reference object.
+/// This rule checks whether the input value is **less than or equal to** a specified reference value.
+/// If the input value is greater, the specified error is thrown.
 ///
-/// Additionally, a transformation closure can be applied to the reference value
-/// before comparison.
-///
-/// - Generic Parameters:
-///   - `Root`: The type of the object that contains the dynamic reference value.
-///   - `Value`: The type of the value being compared. Must conform to `Comparable`.
-///
-/// ## Example Usage
-///
-/// ### Static Value Comparison
+/// # Example
 /// ```swift
-/// enum ValidationError: Error {
-///     case tooLarge
-/// }
-///
-/// let rule = LessThanOrEqualRule(
-///     staticValue: 10,
-///     error: ValidationError.tooLarge
-/// )
-///
+/// let rule = LessThanOrEqualRule(10, error: ValidationError.tooLarge)
 /// do {
-///     try rule.validate(5)  // Passes
-///     try rule.validate(10) // Passes
-///     try rule.validate(15) // Throws ValidationError.tooLarge
+///     try rule.validate(5)  // ✅ Valid (5 ≤ 10)
+///     try rule.validate(15) // ❌ Throws ValidationError.tooLarge
 /// } catch {
 ///     print("Validation failed: \(error)")
 /// }
 /// ```
 ///
-/// ### Dynamic Value Comparison Using KeyPath
-/// ```swift
-/// struct Person {
-///     let age: Int
-/// }
-///
-/// enum ValidationError: Error {
-///     case tooLarge
-/// }
-///
-/// let person = Person(age: 18)
-///
-/// let rule = LessThanOrEqualRule(
-///     referenceRoot: person,
-///     keyPath: \Person.age,
-///     error: ValidationError.tooLarge
-/// )
-///
-/// do {
-///     try rule.validate(16)  // Passes
-///     try rule.validate(18)  // Passes
-///     try rule.validate(20)  // Throws ValidationError.tooLarge
-/// } catch {
-///     print("Validation failed: \(error)")
-/// }
-/// ```
-///
-/// ### Using a Transformation Closure
-/// ```swift
-/// enum ValidationError: Error {
-///     case tooLarge
-/// }
-///
-/// let rule = LessThanOrEqualRule(
-///     staticValue: 10,
-///     transform: { $0 + 5 }, // Adds 5 to the reference value
-///     error: ValidationError.tooLarge
-/// )
-///
-/// do {
-///     try rule.validate(12) // Passes (10 + 5 = 15, and 12 <= 15)
-///     try rule.validate(16) // Throws ValidationError.tooLarge
-///     try rule.validate(9)  // Passes
-/// } catch {
-///     print("Validation failed: \(error)")
-/// }
-/// ```
+/// # Notes
+/// - If the value is `nil`, validation passes automatically.
+/// - This rule ensures **less than or equal to** (`≤`), not strictly less than (`<`).
+/// - Can be used for numeric types or any type conforming to `Comparable`.
 public struct LessThanOrEqualRule<Value: Comparable>: FormFieldRule {
     
     // MARK: - Private Properties
@@ -96,10 +34,10 @@ public struct LessThanOrEqualRule<Value: Comparable>: FormFieldRule {
     
     // MARK: - Initializers
     
-    /// Creates a rule that validates a value against a static reference value.
+    /// Creates a rule that ensures a value is less than or equal to a reference value.
     ///
     /// - Parameters:
-    ///   - staticValue: The static reference value to compare against.
+    ///   - value: The reference value to compare against.
     ///   - error: The error to throw if validation fails.
     public init(
         _ value: Value,
@@ -109,6 +47,12 @@ public struct LessThanOrEqualRule<Value: Comparable>: FormFieldRule {
         self.error = error
     }
     
+    // MARK: - Public Methods
+    
+    /// Validates that the given value is less than or equal to the reference value.
+    ///
+    /// - Parameter value: The value to validate.
+    /// - Throws: The specified error if the value is greater than the reference value.
     public func validate(_ value: Value?) throws {
         guard let value else { return }
         
@@ -118,3 +62,4 @@ public struct LessThanOrEqualRule<Value: Comparable>: FormFieldRule {
     }
     
 }
+

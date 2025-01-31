@@ -5,6 +5,27 @@
 //  Created by Adriano Costa on 14/01/25.
 //
 
+/// A validation rule that ensures a given value is greater than a reference value.
+///
+/// This rule checks whether the input value is **greater than** a specified reference value.
+/// If the input value is less than or equal to the reference value, the specified error is thrown.
+///
+/// # Example
+/// ```swift
+/// let rule = GreaterThanRule(10, error: ValidationError.tooSmall)
+/// do {
+///     try rule.validate(15) // ✅ Valid (15 > 10)
+///     try rule.validate(5)  // ❌ Throws ValidationError.tooSmall
+///     try rule.validate(10) // ❌ Throws ValidationError.tooSmall
+/// } catch {
+///     print("Validation failed: \(error)")
+/// }
+/// ```
+///
+/// # Notes
+/// - If the value is `nil`, validation passes automatically.
+/// - This rule ensures **greater than** (`>`) comparison, not greater than or equal to (`≥`).
+/// - Can be used for numeric types or any type conforming to `Comparable`.
 public struct GreaterThanRule<Value: Comparable>: FormFieldRule {
     
     // MARK: - Private Properties
@@ -14,10 +35,10 @@ public struct GreaterThanRule<Value: Comparable>: FormFieldRule {
     
     // MARK: - Initializers
     
-    /// Creates a rule that validates a value against a static reference value.
+    /// Creates a rule that ensures a value is greater than a reference value.
     ///
     /// - Parameters:
-    ///   - staticValue: The static reference value to compare against.
+    ///   - value: The reference value to compare against.
     ///   - error: The error to throw if validation fails.
     public init(
         _ value: Value,
@@ -29,16 +50,10 @@ public struct GreaterThanRule<Value: Comparable>: FormFieldRule {
     
     // MARK: - Public Methods
     
-    /// Validates the given value to ensure it is greater than the reference value.
+    /// Validates that the given value is greater than the reference value.
     ///
     /// - Parameter value: The value to validate.
-    /// - Throws: The specified error if the validation fails.
-    ///
-    /// - Behavior:
-    ///   1. If `value` is `nil`, the validation passes without throwing an error.
-    ///   2. If the reference value is dynamic, it is retrieved using the provided `KeyPath` from `referenceRoot`.
-    ///   3. If a `valueTransformer` is provided, it is applied to the reference value.
-    ///   4. If `value` is less than the transformed reference value, the specified error is thrown.
+    /// - Throws: The specified error if the value is less than or equal to the reference value.
     public func validate(_ value: Value?) throws {
         guard let value else { return }
         
@@ -48,5 +63,6 @@ public struct GreaterThanRule<Value: Comparable>: FormFieldRule {
     }
     
 }
+
 
 
