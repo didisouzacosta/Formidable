@@ -5,6 +5,26 @@
 //  Created by Adriano Costa on 26/01/25.
 //
 
+/// A validation rule that ensures a given value does not exceed a maximum length.
+///
+/// This rule compares the length of the input value against a static or dynamic reference value.
+/// If the input value's length is greater than the reference value, the specified error is thrown.
+///
+/// # Example
+/// ```swift
+/// let rule = MaxLengthRule(in: 10, error: ValidationError.tooLong)
+/// do {
+///     try rule.validate(8)  // ✅ Valid (8 ≤ 10)
+///     try rule.validate(12) // ❌ Throws ValidationError.tooLong
+/// } catch {
+///     print("Validation failed: \(error)")
+/// }
+/// ```
+///
+/// # Notes
+/// - The reference value can be **static** (a fixed number) or **dynamic** (fetched from another object using `KeyPath`).
+/// - If a transformation closure is provided, it will be applied to the reference value before comparison.
+/// - If `value` is `nil`, the validation passes automatically.
 public struct MaxLengthRule<Root, Value: Mensurable>: FormFieldRule {
     
     // MARK: - Private Properties
@@ -19,7 +39,7 @@ public struct MaxLengthRule<Root, Value: Mensurable>: FormFieldRule {
     /// Creates a rule that validates a value against a static reference value.
     ///
     /// - Parameters:
-    ///   - items: The static collection of values to compare against.
+    ///   - value: The static maximum length allowed.
     ///   - error: The error to throw if validation fails.
     public init(in value: Value, error: Error) {
         self.reference = .staticValue(value)
@@ -28,7 +48,7 @@ public struct MaxLengthRule<Root, Value: Mensurable>: FormFieldRule {
         self.error = error
     }
     
-    /// Creates a rule that validates a value against a dynamic reference collection.
+    /// Creates a rule that validates a value against a dynamic reference value.
     ///
     /// - Parameters:
     ///   - referenceRoot: The object containing the dynamic reference value.
@@ -49,10 +69,10 @@ public struct MaxLengthRule<Root, Value: Mensurable>: FormFieldRule {
     
     // MARK: - Public Methods
     
-    /// Validates that the given value does not exist in the reference value.
+    /// Validates that the given value does not exceed the maximum allowed length.
     ///
     /// - Parameter value: The value to validate.
-    /// - Throws: The specified error if the value exists in the reference value.
+    /// - Throws: The specified error if the value length exceeds the reference value.
     public func validate(_ value: Value?) throws {
         guard let value else { return }
         
@@ -73,6 +93,7 @@ public struct MaxLengthRule<Root, Value: Mensurable>: FormFieldRule {
     }
     
 }
+
 
 
 
