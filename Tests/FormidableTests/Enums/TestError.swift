@@ -15,5 +15,6 @@ enum TestError: Error, Equatable {
     case alreadyExists
     case minLength
     case maxLength
+    case invalidEmail
 }
 

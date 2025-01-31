@@ -6,17 +6,63 @@
 //
 
 import SwiftUI
+import Formidable
 
 struct ContentView: View {
+    
+    @State private var form = SignUpForm(.new)
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            Form {
+                TextField(
+                    "Name",
+                    text: $form.nameField.value
+                )
+                .field($form.nameField)
+                
+                TextField(
+                    "E-mail",
+                    text: $form.emailField.value
+                )
+                .textInputAutocapitalization(.never)
+                .keyboardType(.emailAddress)
+                .field($form.emailField)
+                
+                TextField(
+                    "Password",
+                    text: $form.passwordField.value
+                )
+                .privacySensitive()
+                .field($form.passwordField)
+                
+                DatePicker(
+                    "Birth",
+                    selection: $form.birthField.value,
+                    displayedComponents: .date
+                )
+                .field($form.birthField)
+            }
+            .navigationTitle("SignUp")
+            .toolbar {
+                ToolbarItemGroup {
+                    Button(action: save) {
+                        Text("Save")
+                    }
+                }
+            }
         }
-        .padding()
     }
+    
+    // MARK: - Private Methods
+    
+    private func save() {
+        do {
+            let user = try form.submit()
+            print(user)
+        } catch {}
+    }
+    
 }
 
 #Preview {
