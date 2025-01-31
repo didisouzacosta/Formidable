@@ -48,7 +48,12 @@ final class SignUpForm: Formidable {
     private func setupRules() {
         nameField.rules = [RequiredRule(ValidationError.isRequired)]
         emailField.rules = [RequiredRule(ValidationError.isRequired)]
-        passwordField.rules = [RequiredRule(ValidationError.isRequired)]
+        
+        passwordField.rules = [
+            RequiredRule(ValidationError.isRequired),
+            MinLengthRule<Any>(in: 3, error: ValidationError.minor)
+        ]
+        
         birthField.rules = [RequiredRule(ValidationError.isRequired)]
     }
     
