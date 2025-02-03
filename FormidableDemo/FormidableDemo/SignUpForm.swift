@@ -46,7 +46,9 @@ final class SignUpForm: Formidable {
     // MARK: - Private Methods
     
     private func setupRules() {
-        nameField.rules = [RequiredRule(ValidationError.isRequired)]
+        nameField.rules = [
+            RequiredRule(ValidationError.isRequired)
+        ]
         
         emailField.rules = [
             EmailRule(ValidationError.validEmail),
@@ -58,7 +60,9 @@ final class SignUpForm: Formidable {
             MinLengthRule(in: 3, error: ValidationError.minLengthPassword)
         ]
         
-        birthField.rules = [RequiredRule(ValidationError.isRequired)]
+        birthField.rules = [
+            RequiredRule(ValidationError.isRequired)
+        ]
     }
     
 }
@@ -75,12 +79,12 @@ extension SignUpForm {
         
         var errorDescription: String? {
             switch self {
-            case .isRequired: "This field must not be empty."
-            case .validEmail: "This fild must be contains a valid email."
-            case .alreadyExists: "This field already exists."
-            case .weakPassword: "Input a strong password."
-            case .minor: "You must be 18 years of age or older."
-            case .minLengthPassword: "This field must be at least 3 characters long."
+            case .isRequired: "This field cannot be left empty."
+            case .validEmail: "Please enter a valid email address."
+            case .alreadyExists: "This entry already exists."
+            case .weakPassword: "Please enter a stronger password."
+            case .minor: "You must be at least 18 years old."
+            case .minLengthPassword: "Password must be at least 3 characters long."
             }
         }
     }

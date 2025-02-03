@@ -51,7 +51,7 @@ import SwiftUI
 /// - Dynamic forms requiring value validation.
 /// - Fields with conditional visibility or enabled state.
 /// - Fields needing dynamic transformation of input values.
-@Observable
+
 public final class FormField<Value: Equatable>: FormFieldRepresentable {
     
     // MARK: - Public Variables
