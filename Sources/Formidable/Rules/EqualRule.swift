@@ -60,4 +60,36 @@ public struct EqualRule<Value: Equatable>: FormFieldRule {
     
 }
 
-
+public struct EqualKeyPathRule<Root, Value: Equatable>: FormFieldRule {
+    
+    // MARK: - Private Variables
+    
+    private let root: Root
+    private let keyPath: KeyPath<Root, Value>
+    private let error: Error
+    
+    // MARK: - Initializers
+    
+    public init(
+        _ root: Root,
+        keyPath: KeyPath<Root, Value>,
+        error: Error
+    ) {
+        self.root = root
+        self.keyPath = keyPath
+        self.error = error
+    }
+    
+    // MARK: - Public Methods
+    
+    public func validate(_ value: Value?) throws {
+        guard let value else { return }
+        
+        let referenceValue = root[keyPath: keyPath]
+        
+        if referenceValue != value {
+            throw error
+        }
+    }
+    
+}
