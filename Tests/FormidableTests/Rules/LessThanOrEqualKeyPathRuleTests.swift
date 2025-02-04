@@ -25,10 +25,16 @@ struct LessThanOrEqualKeyPathRuleTests {
     }
     
     @Test func mustBeInvalidWhenValueIsNotLessThanOrEqual() throws {
-        let rule = LessThanOrEqualKeyPathRule(game, keyPath: \.score, error: error)
+        var rule = LessThanOrEqualKeyPathRule(game, keyPath: \.score, error: error)
 
         #expect(throws: error) {
             try rule.validate(101)
+        }
+        
+        rule.transform = { $0 + 10 }
+        
+        #expect(throws: error) {
+            try rule.validate(111)
         }
     }
     

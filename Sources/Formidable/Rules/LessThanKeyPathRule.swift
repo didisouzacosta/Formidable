@@ -11,7 +11,7 @@ public struct LessThanKeyPathRule<Root, Value: Comparable>: FormFieldRule {
     
     // MARK: - Public Variables
     
-    var transform: Transform?
+    public var transform: Transform?
     
     // MARK: - Private Variables
     

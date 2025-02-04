@@ -7,6 +7,12 @@
 
 public struct EqualKeyPathRule<Root, Value: Equatable>: FormFieldRule {
     
+    public typealias Transform = (Value) -> Value
+    
+    // MARK: - Public Variables
+    
+    public var transform: Transform?
+    
     // MARK: - Private Variables
     
     private let root: Root
@@ -18,11 +24,13 @@ public struct EqualKeyPathRule<Root, Value: Equatable>: FormFieldRule {
     public init(
         _ root: Root,
         keyPath: KeyPath<Root, Value>,
-        error: Error
+        error: Error,
+        transform: Transform? = nil
     ) {
         self.root = root
         self.keyPath = keyPath
         self.error = error
+        self.transform = transform
     }
     
     // MARK: - Public Methods
@@ -31,8 +39,9 @@ public struct EqualKeyPathRule<Root, Value: Equatable>: FormFieldRule {
         guard let value else { return }
         
         let referenceValue = root[keyPath: keyPath]
+        let transformedValue = transform?(referenceValue) ?? referenceValue
         
-        if referenceValue != value {
+        if transformedValue != value {
             throw error
         }
     }

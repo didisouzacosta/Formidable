@@ -1,29 +1,30 @@
 //
-//  GreaterThanOrEqualKeyPathRule.swift
+//  UniqueKeyPathRule.swift
 //  Formidable
 //
-//  Created by Adriano Costa on 04/02/25.
+//  Created by Adriano Costa on 26/01/25.
 //
 
-public struct GreaterThanOrEqualKeyPathRule<Root, Value: Comparable>: FormFieldRule {
+public struct UniqueKeyPathRule<Root, Value: Equatable>: FormFieldRule {
     
-    public typealias Transform = (Value) -> Value
+    public typealias Values = [Value]
+    public typealias Transform = (Values) -> Values
     
-    // MARK: - Public Variables
+    // MARK: - Public Properties
     
     public var transform: Transform?
     
-    // MARK: - Private Variables
+    // MARK: - Private Properties
     
     private let root: Root
-    private let keyPath: KeyPath<Root, Value>
+    private let keyPath: KeyPath<Root, Values>
     private let error: Error
     
     // MARK: - Initializers
-    
+
     public init(
         _ root: Root,
-        keyPath: KeyPath<Root, Value>,
+        keyPath: KeyPath<Root, Values>,
         error: Error,
         transform: Transform? = nil
     ) {
@@ -41,9 +42,14 @@ public struct GreaterThanOrEqualKeyPathRule<Root, Value: Comparable>: FormFieldR
         let referenceValue = root[keyPath: keyPath]
         let transformedValue = transform?(referenceValue) ?? referenceValue
         
-        if value < transformedValue  {
+        if transformedValue.contains(value) {
             throw error
         }
     }
     
 }
+
+
+
+
+
