@@ -7,20 +7,20 @@ struct MaxLengthRuleTests {
     private let error = TestError.validationError
     
     @Test func mustBeValidWhenValidateValueIsNil() throws {
-        let rule = MaxLengthRule(in: 10, error: error)
+        let rule = MaxLengthRule(10, error: error)
         
         try rule.validate(nil)
     }
     
     @Test func mustBeValidWhenValueIsLessThanOrEqualReferenceValue() throws {
-        let rule = MaxLengthRule(in: 10, error: error)
+        let rule = MaxLengthRule("Orlando", error: error)
         
-        try rule.validate(10)
-        try rule.validate(9)
+        try rule.validate(7)
+        try rule.validate(6)
     }
     
     @Test func mustBeInvalidWhenValueIsGreaterThanReferenceValue() throws {
-        let rule = MaxLengthRule(in: 10, error: error)
+        let rule = MaxLengthRule(10, error: error)
         
         #expect(throws: error) {
             try rule.validate(11)

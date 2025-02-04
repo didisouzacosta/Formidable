@@ -27,22 +27,18 @@
 /// - Can be used for strings, arrays, or any type conforming to `Mensurable`.
 public struct MinLengthRule: FormFieldRule {
     
-    public typealias Value = Mensurable
+    public typealias Reference = Mensurable
+    public typealias Value = Int
     
     // MARK: - Private Properties
     
-    private let value: Value
+    private let referenceValue: Reference
     private let error: Error
     
     // MARK: - Initializers
     
-    /// Creates a rule that validates whether a value meets the minimum required length.
-    ///
-    /// - Parameters:
-    ///   - value: The minimum length required.
-    ///   - error: The error to throw if validation fails.
-    public init(in value: Value, error: Error) {
-        self.value = value
+    public init(_ referenceValue: Reference, error: Error) {
+        self.referenceValue = referenceValue
         self.error = error
     }
     
@@ -55,7 +51,7 @@ public struct MinLengthRule: FormFieldRule {
     public func validate(_ value: Value?) throws {
         guard let value else { return }
         
-        if self.value.length > value.length {
+        if value.length < referenceValue.length {
             throw error
         }
     }
