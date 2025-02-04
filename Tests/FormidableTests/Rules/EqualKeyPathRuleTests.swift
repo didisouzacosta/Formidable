@@ -25,11 +25,15 @@ struct EqualKeyPathRuleTests {
     }
     
     @Test func mustBeInvalidWhenValueIsNotEqual() throws {
-        let rule = EqualKeyPathRule(game, keyPath: \.score, error: error)
+        var rule = EqualKeyPathRule(game, keyPath: \.score, error: error)
 
         #expect(throws: error) {
             try rule.validate(99)
         }
+        
+        rule.transform = { $0 + 10 }
+        
+        try rule.validate(110)
     }
     
 }
