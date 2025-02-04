@@ -4,7 +4,7 @@ import Testing
 
 struct GreaterThanRuleTests {
  
-    private let error = TestError.areNotGreater
+    private let error = TestError.validationError
     
     @Test func mustBeValidWhenValidateValueIsNil() throws {
         let rule = GreaterThanRule(20, error: error)

@@ -40,10 +40,7 @@ public struct GreaterThanOrEqualRule<Value: Comparable>: FormFieldRule {
     /// - Parameters:
     ///   - value: The reference value to compare against.
     ///   - error: The error to throw if validation fails.
-    public init(
-        _ value: Value,
-        error: Error
-    ) {
+    public init(_ value: Value, error: Error) {
         self.value = value
         self.error = error
     }

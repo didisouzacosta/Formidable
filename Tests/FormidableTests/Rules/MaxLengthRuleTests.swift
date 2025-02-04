@@ -4,7 +4,7 @@ import Testing
 
 struct MaxLengthRuleTests {
  
-    private let error = TestError.minLength
+    private let error = TestError.validationError
     
     @Test func mustBeValidWhenValidateValueIsNil() throws {
         let rule = MaxLengthRule(in: 10, error: error)

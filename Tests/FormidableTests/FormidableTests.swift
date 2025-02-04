@@ -34,12 +34,12 @@ struct FormidableTests {
     
     @Test func ensureIsValidWhenAllFieldsAreValid() throws {
         let form = SignInForm(email: "", password: "")
-        form.emailField.rules = [RequiredRule(TestError.isRequired)]
-        form.passwordField.rules = [RequiredRule(TestError.isRequired)]
+        form.emailField.rules = [RequiredRule(TestError.validationError)]
+        form.passwordField.rules = [RequiredRule(TestError.validationError)]
         
         #expect(form.isValid == false)
         #expect(form.errors.count == 2)
-        #expect(throws: TestError.isRequired) {
+        #expect(throws: TestError.validationError) {
             try form.validate()
         }
         
@@ -54,8 +54,8 @@ struct FormidableTests {
     
     @Test func mustBeReturnToTheOriginalStateAfterReset() throws {
         let form = SignInForm(email: "email@gmail.com", password: "123")
-        form.emailField.rules = [RequiredRule(TestError.isRequired)]
-        form.passwordField.rules = [RequiredRule(TestError.isRequired)]
+        form.emailField.rules = [RequiredRule(TestError.validationError)]
+        form.passwordField.rules = [RequiredRule(TestError.validationError)]
         
         #expect(form.isValid)
         
@@ -74,10 +74,10 @@ struct FormidableTests {
     @Test func disabledFieldsMustBeNotValidated() throws {
         let form = SignInForm(email: "", password: "123")
         
-        form.emailField.rules = [RequiredRule(TestError.isRequired)]
+        form.emailField.rules = [RequiredRule(TestError.validationError)]
         form.emailField.isDisabled = true
         
-        form.passwordField.rules = [RequiredRule(TestError.isRequired)]
+        form.passwordField.rules = [RequiredRule(TestError.validationError)]
         
         #expect(form.isValid)
         
@@ -89,10 +89,10 @@ struct FormidableTests {
     @Test func hiddenFieldsMustBeNotValidated() throws {
         let form = SignInForm(email: "", password: "123")
         
-        form.emailField.rules = [RequiredRule(TestError.isRequired)]
+        form.emailField.rules = [RequiredRule(TestError.validationError)]
         form.emailField.isHidden = true
         
-        form.passwordField.rules = [RequiredRule(TestError.isRequired)]
+        form.passwordField.rules = [RequiredRule(TestError.validationError)]
         
         #expect(form.isValid)
         

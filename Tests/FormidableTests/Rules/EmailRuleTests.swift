@@ -4,7 +4,7 @@ import Testing
 
 struct EmailRuleTests {
  
-    private let error = TestError.invalidEmail
+    private let error = TestError.validationError
     
     @Test func mustBeValidWhenValidateValueIsNil() throws {
         let rule = EmailRule(error)

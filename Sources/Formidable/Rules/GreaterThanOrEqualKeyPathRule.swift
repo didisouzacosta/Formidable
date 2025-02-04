@@ -7,6 +7,12 @@
 
 public struct GreaterThanOrEqualKeyPathRule<Root, Value: Comparable>: FormFieldRule {
     
+    public typealias Transform = (Value) -> Value
+    
+    // MARK: - Public Variables
+    
+    var transform: Transform?
+    
     // MARK: - Private Variables
     
     private let root: Root
@@ -18,11 +24,13 @@ public struct GreaterThanOrEqualKeyPathRule<Root, Value: Comparable>: FormFieldR
     public init(
         _ root: Root,
         keyPath: KeyPath<Root, Value>,
-        error: Error
+        error: Error,
+        transform: Transform? = nil
     ) {
         self.root = root
         self.keyPath = keyPath
         self.error = error
+        self.transform = transform
     }
     
     // MARK: - Public Methods
@@ -31,8 +39,9 @@ public struct GreaterThanOrEqualKeyPathRule<Root, Value: Comparable>: FormFieldR
         guard let value else { return }
         
         let referenceValue = root[keyPath: keyPath]
+        let transformedValue = transform?(referenceValue) ?? referenceValue
         
-        if value < referenceValue  {
+        if value < transformedValue  {
             throw error
         }
     }

@@ -4,7 +4,7 @@ import Testing
 
 struct GreaterThanKeyPathRuleTests {
  
-    private let error = TestError.areNotEqual
+    private let error = TestError.validationError
     private var game = Game(100)
     
     @Test func mustBeValidWhenValidateValueIsNil() throws {
@@ -25,10 +25,16 @@ struct GreaterThanKeyPathRuleTests {
     }
     
     @Test func mustBeInvalidWhenValueIsNotLessThan() throws {
-        let rule = GreaterThanKeyPathRule(game, keyPath: \.score, error: error)
+        var rule = GreaterThanKeyPathRule(game, keyPath: \.score, error: error)
 
         #expect(throws: error) {
             try rule.validate(100)
+        }
+        
+        rule.transform = { $0 + 10 }
+        
+        #expect(throws: error) {
+            try rule.validate(110)
         }
     }
     

@@ -4,7 +4,7 @@ import Testing
 
 struct UniqueRuleTests {
  
-    private let error = TestError.alreadyExists
+    private let error = TestError.validationError
     
     @Test func mustBeValidWhenValidateValueIsNil() throws {
         let rule = UniqueRule(in: [10], error: error)

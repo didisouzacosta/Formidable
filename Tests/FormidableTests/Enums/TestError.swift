@@ -6,15 +6,6 @@
 //
 
 enum TestError: Error, Equatable {
-    case isRequired
-    case areNotEqual
-    case areNotGreater
-    case areNotLess
-    case areNotLessThanOrEqual
-    case areNotGreaterThanOrEqual
-    case alreadyExists
-    case minLength
-    case maxLength
-    case invalidEmail
+    case validationError
 }
 

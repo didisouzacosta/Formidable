@@ -4,7 +4,7 @@ import Testing
 
 struct LessThanOrEqualKeyPathRuleTests {
  
-    private let error = TestError.areNotEqual
+    private let error = TestError.validationError
     private var game = Game(100)
     
     @Test func mustBeValidWhenValidateValueIsNil() throws {
