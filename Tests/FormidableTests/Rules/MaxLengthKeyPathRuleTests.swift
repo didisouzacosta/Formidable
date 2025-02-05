@@ -17,8 +17,8 @@ struct MaxLengthKeyPathRuleTests {
         let user = User("Orlando")
         let rule = MaxLengthKeyPathRule(user, keyPath: \.name, error: error)
         
-        try rule.validate(7)
-        try rule.validate(8)
+        try rule.validate("Orlando")
+        try rule.validate("Orlando Bolotari Costa")
     }
     
     @Test func mustBeInvalidWhenValueIsLessThanReferenceValue() throws {
@@ -26,7 +26,7 @@ struct MaxLengthKeyPathRuleTests {
         let rule = MaxLengthKeyPathRule(user, keyPath: \.name, error: error)
         
         #expect(throws: error) {
-            try rule.validate(6)
+            try rule.validate("Lando")
         }
     }
     

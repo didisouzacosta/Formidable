@@ -8,6 +8,7 @@
 import Foundation
 import Formidable
 
+@Observable
 final class SignUpForm: Formidable {
     
     // MARK: - Public Variables
@@ -57,7 +58,7 @@ final class SignUpForm: Formidable {
         
         passwordField.rules = [
             RequiredRule(ValidationError.isRequired),
-            MinLengthRule(in: 3, error: ValidationError.minLengthPassword)
+            MinLengthRule(3, error: ValidationError.minLengthPassword)
         ]
         
         birthField.rules = [

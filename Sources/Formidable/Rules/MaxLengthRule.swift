@@ -7,17 +7,16 @@
 
 public struct MaxLengthRule: FormFieldRule {
     
-    public typealias Reference = Mensurable
-    public typealias Value = Int
+    public typealias Value = Mensurable
     
     // MARK: - Private Properties
     
-    private let referenceValue: Reference
+    private let referenceValue: Value
     private let error: Error
     
     // MARK: - Initializers
     
-    public init(_ referenceValue: Reference, error: Error) {
+    public init(_ referenceValue: Value, error: Error) {
         self.referenceValue = referenceValue
         self.error = error
     }

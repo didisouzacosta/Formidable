@@ -15,8 +15,7 @@ struct AnyRule: FormFieldRule {
     
     init<T: FormFieldRule>(_ rule: T) {
         _validate = { value in
-            guard let value = value as? T.Value else { return }
-            try rule.validate(value)
+            try rule.validate(value as? T.Value)
         }
     }
     

@@ -5,9 +5,9 @@
 //  Created by Adriano Costa on 04/02/25.
 //
 
-public struct MaxLengthKeyPathRule<Root, Reference: Mensurable>: FormFieldRule {
+public struct MaxLengthKeyPathRule<Root, Value: Mensurable>: FormFieldRule {
     
-    public typealias Transform = (Reference) -> Reference
+    public typealias Transform = (Value) -> Value
     
     // MARK: - Public Properties
     
@@ -16,14 +16,14 @@ public struct MaxLengthKeyPathRule<Root, Reference: Mensurable>: FormFieldRule {
     // MARK: - Private Properties
     
     private let root: Root
-    private let keyPath: KeyPath<Root, Reference>
+    private let keyPath: KeyPath<Root, Value>
     private let error: Error
     
     // MARK: - Initializers
     
     public init(
         _ root: Root,
-        keyPath: KeyPath<Root, Reference>,
+        keyPath: KeyPath<Root, Value>,
         error: Error,
         transform: Transform? = nil
     ) {
@@ -35,13 +35,13 @@ public struct MaxLengthKeyPathRule<Root, Reference: Mensurable>: FormFieldRule {
     
     // MARK: - Public Methods
     
-    public func validate(_ value: Double?) throws {
+    public func validate(_ value: Value?) throws {
         guard let value else { return }
         
         let referenceValue = root[keyPath: keyPath]
         let transformedValue = transform?(referenceValue) ?? referenceValue
         
-        if transformedValue.length > value  {
+        if transformedValue.length > value.length  {
             throw error
         }
     }
