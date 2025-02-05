@@ -15,7 +15,7 @@
 /// let rule = GreaterThanRule(10, error: ValidationError.tooSmall)
 /// do {
 ///     try rule.validate(15) // ✅ Valid (15 > 10)
-///     try rule.validate(5)  // ❌ Throws ValidationError.tooSmall
+///     try rule.validate(5) // ❌ Throws ValidationError.tooSmall
 ///     try rule.validate(10) // ❌ Throws ValidationError.tooSmall
 /// } catch {
 ///     print("Validation failed: \(error)")

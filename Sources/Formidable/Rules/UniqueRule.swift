@@ -15,8 +15,8 @@
 /// let existingItems = ["apple", "banana", "cherry"]
 /// let rule = UniqueRule(in: existingItems, error: ValidationError.notUnique)
 /// do {
-///     try rule.validate("orange")  // ✅ Valid (not in the collection)
-///     try rule.validate("apple")   // ❌ Throws ValidationError.notUnique
+///     try rule.validate("orange") // ✅ Valid (not in the collection)
+///     try rule.validate("apple") // ❌ Throws ValidationError.notUnique
 /// } catch {
 ///     print("Validation failed: \(error)")
 /// }

@@ -17,7 +17,7 @@ import Foundation
 /// let rule = EmailRule(ValidationError.invalidEmail)
 /// do {
 ///     try rule.validate("user@example.com") // ✅ Valid email
-///     try rule.validate("invalid-email")    // ❌ Throws ValidationError.invalidEmail
+///     try rule.validate("invalid-email") // ❌ Throws ValidationError.invalidEmail
 /// } catch {
 ///     print("Validation failed: \(error)")
 /// }

@@ -14,7 +14,7 @@
 /// ```swift
 /// let rule = LessThanOrEqualRule(10, error: ValidationError.tooLarge)
 /// do {
-///     try rule.validate(5)  // ✅ Valid (5 ≤ 10)
+///     try rule.validate(5) // ✅ Valid (5 ≤ 10)
 ///     try rule.validate(15) // ❌ Throws ValidationError.tooLarge
 /// } catch {
 ///     print("Validation failed: \(error)")

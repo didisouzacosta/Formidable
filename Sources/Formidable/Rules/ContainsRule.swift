@@ -15,8 +15,8 @@
 /// let items = ["apple", "banana", "cherry"]
 /// let rule = ContainsRule(in: items, error: ValidationError.notUnique)
 /// do {
-///     try rule.validate("banana")  // ✅ Valid (not contains in the collection)
-///     try rule.validate("orange")   // ❌ Throws ValidationError.notContains
+///     try rule.validate("banana") // ✅ Valid (not contains in the collection)
+///     try rule.validate("orange") // ❌ Throws ValidationError.notContains
 /// } catch {
 ///     print("Validation failed: \(error)")
 /// }

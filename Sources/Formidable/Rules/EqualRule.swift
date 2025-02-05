@@ -14,8 +14,8 @@
 /// ```swift
 /// let rule = EqualRule(10, error: ValidationError.notEqual)
 /// do {
-///     try rule.validate(10)  // ✅ Valid (10 == 10)
-///     try rule.validate(5)   // ❌ Throws ValidationError.notEqual
+///     try rule.validate(10) // ✅ Valid (10 == 10)
+///     try rule.validate(5) // ❌ Throws ValidationError.notEqual
 /// } catch {
 ///     print("Validation failed: \(error)")
 /// }

@@ -16,7 +16,7 @@ import Foundation
 /// ```swift
 /// let rule = LessThanRule(10, error: ValidationError.tooLarge)
 /// do {
-///     try rule.validate(8)  // ✅ Valid (8 < 10)
+///     try rule.validate(8) // ✅ Valid (8 < 10)
 ///     try rule.validate(12) // ❌ Throws ValidationError.tooLarge
 ///     try rule.validate(10) // ❌ Throws ValidationError.tooLarge
 /// } catch {

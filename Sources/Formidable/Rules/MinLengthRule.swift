@@ -14,8 +14,8 @@
 /// ```swift
 /// let rule = MinLengthRule(in: 5, error: ValidationError.tooShort)
 /// do {
-///     try rule.validate(6)  // ✅ Valid (6 ≥ 5)
-///     try rule.validate(4)  // ❌ Throws ValidationError.tooShort
+///     try rule.validate(6) // ✅ Valid (6 ≥ 5)
+///     try rule.validate(4) // ❌ Throws ValidationError.tooShort
 /// } catch {
 ///     print("Validation failed: \(error)")
 /// }
