@@ -49,20 +49,11 @@ public protocol Formidable: ObservableObject {}
 
 public extension Formidable {
     
-    /// Validates the fields of the form, setting `showErrors` to `true` for each field.
-    /// Throws the first error encountered in the fields, if any.
-    ///
-    /// - Throws: The first error from the form fields, if any.
-    func validate() throws {
-        fields.forEach { $0.showErrors = true }
-        if let error = errors.first {
-            throw error
-        }
-    }
-    
-    /// Resets all fields in the form to their initial values, clearing any errors.
-    func reset() {
-        fields.forEach { $0.reset() }
+    /// A property that indicates whether all form fiels are disabled.
+    /// Returns `true` if there all disabled, `false` otherwise.
+    var isDisabled: Bool {
+        get { fields.allSatisfy { $0.isDisabled } }
+        set { fields.forEach { $0.isDisabled = newValue } }
     }
     
     /// A computed property that indicates whether all form fields are valid.
@@ -83,14 +74,28 @@ public extension Formidable {
         fields.flatMap { $0.errors.compactMap { $0 } }
     }
     
-    // MARK: - Private Properties
-    
     /// A private computed property that collects all form fields from the conforming object.
     /// Uses reflection to find properties that conform to the `FormField` protocol.
     ///
     /// - Returns: An array of form fields that are part of the conforming object.
     var fields: [any FormFieldRepresentable] {
         Mirror(reflecting: self).children.compactMap { $0.value as? any FormFieldRepresentable }
+    }
+    
+    /// Validates the fields of the form, setting `showErrors` to `true` for each field.
+    /// Throws the first error encountered in the fields, if any.
+    ///
+    /// - Throws: The first error from the form fields, if any.
+    func validate() throws {
+        fields.forEach { $0.showErrors = true }
+        if let error = errors.first {
+            throw error
+        }
+    }
+    
+    /// Resets all fields in the form to their initial values, clearing any errors.
+    func reset() {
+        fields.forEach { $0.reset() }
     }
     
 }

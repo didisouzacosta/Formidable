@@ -101,6 +101,19 @@ struct FormidableTests {
         #expect(form.isValid == false)
     }
     
+    @Test func ensureDisableOrEnableForm() throws {
+        let form = SignInForm(email: "", password: "123")
+        form.isDisabled = true
+        
+        #expect(form.emailField.isDisabled)
+        #expect(form.passwordField.isDisabled)
+        
+        form.isDisabled = false
+        
+        #expect(form.emailField.isDisabled == false)
+        #expect(form.passwordField.isDisabled == false)
+    }
+    
 }
 
 fileprivate final class SignInForm: Formidable {
