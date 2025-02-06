@@ -60,23 +60,31 @@ struct SignUpFormView: View {
                     Toggle("Terms", isOn: $form.agreeTermsField.value)
                         .field($form.agreeTermsField)
                 } footer: {
-                    RequirementsView(
-                        nameIsValid: form.nameField.isValid,
-                        emailIsValid: form.emailField.isValid,
-                        passwordIsValid: form.passwordField.isValid,
-                        birthIsValid: form.birthField.isValid,
-                        languageIsValid: form.languageField.isValid,
-                        agreeTerms: form.agreeTermsField.isValid
-                    )
-                    .padding(.top, 4)
+                    if !form.isDisabled {
+                        RequirementsView(
+                            nameIsValid: form.nameField.isValid,
+                            emailIsValid: form.emailField.isValid,
+                            passwordIsValid: form.passwordField.isValid,
+                            birthIsValid: form.birthField.isValid,
+                            languageIsValid: form.languageField.isValid,
+                            agreeTerms: form.agreeTermsField.isValid
+                        )
+                        .padding(.top, 4)
+                    }
                 }
             }
             .navigationTitle("SignUp")
             .toolbar {
-                ToolbarItemGroup {
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    Button(action: toggleDisable) {
+                        Text(form.isDisabled ? "Enable" : "Disable")
+                    }
+                }
+                ToolbarItemGroup() {
                     Button(action: reset) {
                         Text("Reset")
                     }
+                    .disabled(form.isDisabled)
                     
                     Button(action: save) {
                         Text("Save")
@@ -93,6 +101,10 @@ struct SignUpFormView: View {
     
     private func reset() {
         form.reset()
+    }
+    
+    private func toggleDisable() {
+        form.isDisabled.toggle()
     }
     
     private func save() {

@@ -83,11 +83,15 @@ public extension Formidable {
     }
     
     /// Validates the fields of the form, setting `showErrors` to `true` for each field.
+    /// Validation will only work when the form is enabled.
     /// Throws the first error encountered in the fields, if any.
     ///
     /// - Throws: The first error from the form fields, if any.
     func validate() throws {
+        guard !isDisabled else { return }
+        
         fields.forEach { $0.showErrors = true }
+        
         if let error = errors.first {
             throw error
         }
