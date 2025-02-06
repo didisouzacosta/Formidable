@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "76B7D816-96EE-4D1A-A9B4-09F103A9656F",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "FormidableTests",
+        "name" : "FormidableTests"
+      }
+    }
+  ],
+  "version" : 1
+}
