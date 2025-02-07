@@ -23,7 +23,6 @@
 
 /* Begin PBXFileReference section */
 		A9419BCB2D55955800C67BF9 /* FormidableDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FormidableDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A9419C2D2D559F4900C67BF9 /* FormidableDemo.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = FormidableDemo.xctestplan; path = FormidableDemoTests/FormidableDemo.xctestplan; sourceTree = "<group>"; };
 		A9E8FA4C2D4B99B6007487B4 /* Formidable Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Formidable Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -63,7 +62,6 @@
 		A9E8FA432D4B99B6007487B4 = {
 			isa = PBXGroup;
 			children = (
-				A9419C2D2D559F4900C67BF9 /* FormidableDemo.xctestplan */,
 				A9E8FA4E2D4B99B6007487B4 /* FormidableDemo */,
 				A9419BCC2D55955900C67BF9 /* FormidableDemoTests */,
 				A9E8FA4D2D4B99B6007487B4 /* Products */,
