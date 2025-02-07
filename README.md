@@ -6,9 +6,17 @@ https://github.com/user-attachments/assets/2aab4a21-b7ff-4526-a73b-7bba02a7f070
 
 ---
 
+## Requirements
+
+| Platform                                             | Minimum Swift Version | 
+| ---------------------------------------------------- | --------------------- |
+| iOS 17.0+ / macOS 15.0+ / tvOS 17.0+ | Swift 5 / Xcode 15.0
+
 ## Instalation
 
 ### Swift Package Manager
+
+---
 
 
 ```swift
