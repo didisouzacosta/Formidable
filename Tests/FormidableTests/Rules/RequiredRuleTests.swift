@@ -18,7 +18,16 @@ struct RequiredRuleTests {
         try rule.validate(36.9)
         try rule.validate(Float(2.2))
         try rule.validate(-100)
-        try rule.validate(0)
+    }
+    
+    @Test func mustBeNotValidWhenValidateValueIsZero() throws {
+        let rule = RequiredRule(error)
+        
+        #expect(throws: error) {
+            try rule.validate(0)
+            try rule.validate(Double(0.0))
+            try rule.validate(Float(0.0))
+        }
     }
     
     @Test func mustBeNotValidWhenValidateValueIsNil() throws {

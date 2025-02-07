@@ -26,7 +26,7 @@ extension Bool: Emptable {
 extension Int: Emptable {
     
     public var isEmpty: Bool {
-        false
+        self == 0
     }
     
 }
@@ -34,7 +34,7 @@ extension Int: Emptable {
 extension Double: Emptable {
     
     public var isEmpty: Bool {
-        false
+        self == 0
     }
     
 }
@@ -42,7 +42,7 @@ extension Double: Emptable {
 extension Float: Emptable {
     
     public var isEmpty: Bool {
-        false
+        self == 0
     }
     
 }
