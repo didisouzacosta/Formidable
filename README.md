@@ -2,6 +2,8 @@
 
 The `Formidable` protocol is designed for objects that manage forms composed of multiple `FormField` components. By conforming to this protocol, you can leverage built-in functionality to validate, reset, and check the validity of all form fields at once.
 
+<video src="Assets/presentation.mp4" controls></video>
+
 #### Key Features:
 
 - **Validation**: The `validate()` method validates all fields in the form and throws an error if any field fails validation.
