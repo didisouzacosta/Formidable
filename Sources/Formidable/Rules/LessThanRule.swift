@@ -5,8 +5,6 @@
 //  Created by Adriano Costa on 26/01/25.
 //
 
-import Foundation
-
 /// A validation rule that ensures a given value is strictly less than a reference value.
 ///
 /// This rule compares the input value against a predefined reference value.

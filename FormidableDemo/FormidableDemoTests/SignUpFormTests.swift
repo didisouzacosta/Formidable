@@ -8,7 +8,7 @@
 import Testing
 import Foundation
 
-@testable import FormidableDemo
+@testable import Formidable_Demo
 
 struct SignUpFormTests {
     

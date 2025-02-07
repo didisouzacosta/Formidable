@@ -11,7 +11,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		A95F659D2D54D81A000CB7D7 /* PBXContainerItemProxy */ = {
+		A9419BCF2D55955900C67BF9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A9E8FA442D4B99B6007487B4 /* Project object */;
 			proxyType = 1;
@@ -21,12 +21,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A95F65992D54D81A000CB7D7 /* FormidableDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FormidableDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9419BCB2D55955800C67BF9 /* FormidableDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FormidableDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E8FA4C2D4B99B6007487B4 /* Formidable Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Formidable Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A95F659A2D54D81A000CB7D7 /* FormidableDemoTests */ = {
+		A9419BCC2D55955900C67BF9 /* FormidableDemoTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = FormidableDemoTests;
 			sourceTree = "<group>";
@@ -39,7 +39,7 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A95F65962D54D81A000CB7D7 /* Frameworks */ = {
+		A9419BC82D55955800C67BF9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -61,7 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				A9E8FA4E2D4B99B6007487B4 /* FormidableDemo */,
-				A95F659A2D54D81A000CB7D7 /* FormidableDemoTests */,
+				A9419BCC2D55955900C67BF9 /* FormidableDemoTests */,
 				A9E8FA4D2D4B99B6007487B4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -70,7 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				A9E8FA4C2D4B99B6007487B4 /* Formidable Demo.app */,
-				A95F65992D54D81A000CB7D7 /* FormidableDemoTests.xctest */,
+				A9419BCB2D55955800C67BF9 /* FormidableDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -78,27 +78,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A95F65982D54D81A000CB7D7 /* FormidableDemoTests */ = {
+		A9419BCA2D55955800C67BF9 /* FormidableDemoTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A95F65A12D54D81A000CB7D7 /* Build configuration list for PBXNativeTarget "FormidableDemoTests" */;
+			buildConfigurationList = A9419BD12D55955900C67BF9 /* Build configuration list for PBXNativeTarget "FormidableDemoTests" */;
 			buildPhases = (
-				A95F65952D54D81A000CB7D7 /* Sources */,
-				A95F65962D54D81A000CB7D7 /* Frameworks */,
-				A95F65972D54D81A000CB7D7 /* Resources */,
+				A9419BC72D55955800C67BF9 /* Sources */,
+				A9419BC82D55955800C67BF9 /* Frameworks */,
+				A9419BC92D55955800C67BF9 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				A95F659E2D54D81A000CB7D7 /* PBXTargetDependency */,
+				A9419BD02D55955900C67BF9 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				A95F659A2D54D81A000CB7D7 /* FormidableDemoTests */,
+				A9419BCC2D55955900C67BF9 /* FormidableDemoTests */,
 			);
 			name = FormidableDemoTests;
 			packageProductDependencies = (
 			);
 			productName = FormidableDemoTests;
-			productReference = A95F65992D54D81A000CB7D7 /* FormidableDemoTests.xctest */;
+			productReference = A9419BCB2D55955800C67BF9 /* FormidableDemoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		A9E8FA4B2D4B99B6007487B4 /* FormidableDemo */ = {
@@ -134,7 +134,7 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
-					A95F65982D54D81A000CB7D7 = {
+					A9419BCA2D55955800C67BF9 = {
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = A9E8FA4B2D4B99B6007487B4;
 					};
@@ -161,13 +161,13 @@
 			projectRoot = "";
 			targets = (
 				A9E8FA4B2D4B99B6007487B4 /* FormidableDemo */,
-				A95F65982D54D81A000CB7D7 /* FormidableDemoTests */,
+				A9419BCA2D55955800C67BF9 /* FormidableDemoTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A95F65972D54D81A000CB7D7 /* Resources */ = {
+		A9419BC92D55955800C67BF9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -184,7 +184,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A95F65952D54D81A000CB7D7 /* Sources */ = {
+		A9419BC72D55955800C67BF9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -201,15 +201,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		A95F659E2D54D81A000CB7D7 /* PBXTargetDependency */ = {
+		A9419BD02D55955900C67BF9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A9E8FA4B2D4B99B6007487B4 /* FormidableDemo */;
-			targetProxy = A95F659D2D54D81A000CB7D7 /* PBXContainerItemProxy */;
+			targetProxy = A9419BCF2D55955900C67BF9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		A95F659F2D54D81A000CB7D7 /* Debug */ = {
+		A9419BD22D55955900C67BF9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -225,11 +225,11 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FormidableDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FormidableDemo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Formidable Demo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Formidable Demo";
 			};
 			name = Debug;
 		};
-		A95F65A02D54D81A000CB7D7 /* Release */ = {
+		A9419BD32D55955900C67BF9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -245,7 +245,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FormidableDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FormidableDemo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Formidable Demo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Formidable Demo";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -445,11 +445,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A95F65A12D54D81A000CB7D7 /* Build configuration list for PBXNativeTarget "FormidableDemoTests" */ = {
+		A9419BD12D55955900C67BF9 /* Build configuration list for PBXNativeTarget "FormidableDemoTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A95F659F2D54D81A000CB7D7 /* Debug */,
-				A95F65A02D54D81A000CB7D7 /* Release */,
+				A9419BD22D55955900C67BF9 /* Debug */,
+				A9419BD32D55955900C67BF9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

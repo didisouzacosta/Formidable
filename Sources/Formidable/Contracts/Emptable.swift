@@ -15,6 +15,14 @@ extension String: Emptable {}
 extension Data: Emptable {}
 extension Array: Emptable {}
 
+extension Bool: Emptable {
+    
+    public var isEmpty: Bool {
+        self == false
+    }
+    
+}
+
 extension Int: Emptable {
     
     public var isEmpty: Bool {
