@@ -4,6 +4,21 @@
 
 https://github.com/user-attachments/assets/2aab4a21-b7ff-4526-a73b-7bba02a7f070
 
+---
+
+## Instalation
+
+### Swift Package Manager
+
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/didisouzacosta/Formidable", .upToNextMajor(from: "1.0.0"))
+]
+```
+
+---
+
 ## Key Features
 - **Validation**: The `validate()` method checks all fields and throws an error if any fail validation.
 - **Reset**: The `reset()` method restores all fields to their original values.
@@ -31,13 +46,16 @@ The `FormField` class represents a form field, managing its value, validation ru
 
 ---
 
-## Instalation
+## Validation Rules
 
-### Swift Package Manager
+Validation rules define the conditions a field must meet to be valid. Common examples include:
 
-```
-https://github.com/didisouzacosta/Formidable
-```
+- **`GreaterThanRule`**: Ensures a field's value is greater than a specified number.
+- **`LessThanRule`**: Ensures a field's value is less than a specified number.
+- **`RequiredRule`**: Ensures a field is not empty.
+- **`EqualRule`**: Ensures a field matches a specific value.
+
+For instance, you can require an age field to be greater than 18.
 
 ---
 
