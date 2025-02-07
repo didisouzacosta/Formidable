@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A9419C2C2D559EE200C67BF9 /* Formidable in Frameworks */ = {isa = PBXBuildFile; productRef = A9419C2B2D559EE200C67BF9 /* Formidable */; };
 		A9E8FA632D4B9A6D007487B4 /* Formidable in Frameworks */ = {isa = PBXBuildFile; productRef = A9E8FA622D4B9A6D007487B4 /* Formidable */; };
 /* End PBXBuildFile section */
 
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		A9419BCB2D55955800C67BF9 /* FormidableDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FormidableDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9419C2D2D559F4900C67BF9 /* FormidableDemo.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = FormidableDemo.xctestplan; path = FormidableDemoTests/FormidableDemo.xctestplan; sourceTree = "<group>"; };
 		A9E8FA4C2D4B99B6007487B4 /* Formidable Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Formidable Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -51,6 +53,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9E8FA632D4B9A6D007487B4 /* Formidable in Frameworks */,
+				A9419C2C2D559EE200C67BF9 /* Formidable in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +63,7 @@
 		A9E8FA432D4B99B6007487B4 = {
 			isa = PBXGroup;
 			children = (
+				A9419C2D2D559F4900C67BF9 /* FormidableDemo.xctestplan */,
 				A9E8FA4E2D4B99B6007487B4 /* FormidableDemo */,
 				A9419BCC2D55955900C67BF9 /* FormidableDemoTests */,
 				A9E8FA4D2D4B99B6007487B4 /* Products */,
@@ -119,6 +123,7 @@
 			name = FormidableDemo;
 			packageProductDependencies = (
 				A9E8FA622D4B9A6D007487B4 /* Formidable */,
+				A9419C2B2D559EE200C67BF9 /* Formidable */,
 			);
 			productName = FormidableDemo;
 			productReference = A9E8FA4C2D4B99B6007487B4 /* Formidable Demo.app */;
@@ -153,7 +158,7 @@
 			mainGroup = A9E8FA432D4B99B6007487B4;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				A9E8FA612D4B9A6D007487B4 /* XCLocalSwiftPackageReference "../../Formidable" */,
+				A9419C2A2D559EE200C67BF9 /* XCRemoteSwiftPackageReference "Formidable" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A9E8FA4D2D4B99B6007487B4 /* Products */;
@@ -474,14 +479,23 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		A9E8FA612D4B9A6D007487B4 /* XCLocalSwiftPackageReference "../../Formidable" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../Formidable;
+/* Begin XCRemoteSwiftPackageReference section */
+		A9419C2A2D559EE200C67BF9 /* XCRemoteSwiftPackageReference "Formidable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/didisouzacosta/Formidable";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A9419C2B2D559EE200C67BF9 /* Formidable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A9419C2A2D559EE200C67BF9 /* XCRemoteSwiftPackageReference "Formidable" */;
+			productName = Formidable;
+		};
 		A9E8FA622D4B9A6D007487B4 /* Formidable */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Formidable;

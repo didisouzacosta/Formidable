@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "882896A8-E497-4E31-96B1-821F3182465A",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:FormidableDemo.xcodeproj",
+        "identifier" : "A9419BCA2D55955800C67BF9",
+        "name" : "FormidableDemoTests"
+      }
+    }
+  ],
+  "version" : 1
+}

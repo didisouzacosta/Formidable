@@ -1,0 +1,15 @@
+{
+  "originHash" : "4cb70e0f194b28972565a1819eee5b8a683866c6160ea3cdefb19aee62283c32",
+  "pins" : [
+    {
+      "identity" : "formidable",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/didisouzacosta/Formidable",
+      "state" : {
+        "branch" : "main",
+        "revision" : "109afe2cc94aa994001f8265a18ebc958acc7679"
+      }
+    }
+  ],
+  "version" : 3
+}
