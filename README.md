@@ -1,103 +1,153 @@
 # Formidable
 
-The `Formidable` protocol is designed for objects that manage forms composed of multiple `FormField` components. By conforming to this protocol, you can leverage built-in functionality to validate, reset, and check the validity of all form fields at once.
+`Formidable` is a protocol designed for objects that manage forms composed of multiple `FormField` components. It provides built-in functionality for validating, resetting, and checking the validity of form fields.
 
 https://github.com/user-attachments/assets/2aab4a21-b7ff-4526-a73b-7bba02a7f070
 
-#### Key Features:
+## Key Features
+- **Validation**: The `validate()` method checks all fields and throws an error if any fail validation.
+- **Reset**: The `reset()` method restores all fields to their original values.
+- **Validity Check**: The `isValid` computed property determines whether all fields are valid.
+- **Error Aggregation**: The `errors` computed property collects validation errors for easy handling.
+- **Enable State**: The `isEnabled` property checks whether all fields are enabled.
 
-- **Validation**: The `validate()` method validates all fields in the form and throws an error if any field fails validation.
-- **Reset**: The `reset()` method resets all fields back to their original values.
-- **Validity Check**: The `isValid` computed property checks if all fields are valid by confirming there are no validation errors.
-- **Error Aggregation**: The `errors` computed property collects all errors from the form fields, so you can handle them collectively.
-
-By adopting `Formidable`, you can create complex forms with ease, ensuring their correctness and consistency throughout the application lifecycle.
-
-# FormField System
-
-This system provides a structure for managing form fields, performing validation, and handling user inputs in a consistent manner. The `FormField` protocol and various rule types enable creating dynamic and flexible forms for iOS applications.
-
-## Table of Contents
-
-- [FormFieldValue](#formfieldvalue)
-- [Formidable Protocol](#formidable-protocol)
-- [Validation Rules](#validation-rules)
-- [Example Usage](#example-usage)
+By adopting `Formidable`, you can create structured forms with reliable state management and validation.
 
 ---
 
-### FormFieldValue
+## FormField
 
-The `FormFieldValue` class represents a form field with a specific value. It is responsible for holding the value, applying validation rules, and triggering value changes.
+The `FormField` class represents a form field, managing its value, validation rules, and change tracking.
 
-#### Public Variables
-
-- **`isHidden`**: A boolean indicating whether the field should be hidden from the UI. Default is `false`.
-- **`isDisabled`**: A boolean indicating whether the field should be disabled (i.e., not editable). Default is `false`.
-- **`rules`**: An array of validation rules that should be applied to the field. This is an array of types conforming to the `FormFieldRule` protocol.
-- **`transform`**: An optional closure that can be used to transform the value before accessing it.
-- **`valueChanged`**: A closure that is called when the value of the field changes. It provides both the old and new values.
-- **`showErrors`**: A boolean that determines whether validation errors should be displayed for the field. Default is `false`.
-- **`originalValue`**: The original value of the field when it was first created. This is used to reset the field to its initial value.
-- **`value`**: The current value of the field. This is the value that can be accessed and modified. The getter applies the `transform` closure (if provided) to the value.
-
----
-
-### Formidable Protocol
-
-The `Formidable` protocol is intended for objects that contain one or more `FormField` objects. It provides functionality for validating fields, resetting them, and managing errors.
-
-#### Public Methods
-
-- **`validate()`**: This method validates all form fields. If any field fails validation, an error is thrown. It first sets `showErrors` to `true` for each field before performing validation.
-- **`reset()`**: Resets all form fields to their original values and clears any validation errors.
-- **`isValid`**: A computed property that returns `true` if all fields are valid (i.e., no errors), and `false` otherwise.
-- **`errors`**: A computed property that returns an array of errors from all form fields.
-
-#### Private Properties
-
-- **`fields`**: A computed property that uses reflection to dynamically find and return all properties of the conforming object that are of type `FormField`.
+### Public Properties
+- **`isHidden`**: Hides the field from the UI (default: `false`).
+- **`isDisabled`**: Disables editing (default: `false`).
+- **`rules`**: An array of validation rules (`FormFieldRule` conforming types).
+- **`transform`**: An optional closure that modifies the value before retrieval.
+- **`valueChanged`**: A closure triggered when the value changes.
+- **`showErrors`**: Controls whether validation errors should be displayed.
+- **`originalValue`**: Stores the initial value for reset purposes.
+- **`value`**: Holds the current field value, applying transformations if set.
 
 ---
 
-### Validation Rules
+## Instalation
 
-Validation rules are used to define the conditions that form fields must meet to be considered valid. Some common rules include `GreaterThanRule`, `LessThanRule`, `RequiredRule`, and `EqualRule`. These rules can be added to form fields to validate their values according to the defined logic.
+### Swift Package Manager
 
-For example, you can set a rule to ensure that a field’s value is greater than a specific value or that it is required to be non-empty.
+```
+https://github.com/didisouzacosta/Formidable
+```
 
 ---
 
-### Example Usage
-
-Below is an example of how to use the form system with the `Formidable` protocol and `FormFieldValue` class, along with validation rules.
+## Example Usage
 
 ```swift
-@Observable
-struct UserForm: Formidable {
-    var name: FormFieldValue<String>
-    var age: FormFieldValue<Int>
-    
-    init(name: String, age: Int) {
-        self.name = FormFieldValue(name)
-        self.age = FormFieldValue(age)
+import SwiftUI
+import Formidable
+
+enum ValidationError: LocalizedError {
+    case isRequired
+    case ageTooLow
+
+    var errorDescription: String? {
+        switch self {
+        case .isRequired: return "This field cannot be left empty."
+        case .ageTooLow: return "You need to be of legal age."
+        }
     }
 }
 
-// Create the form with initial values
-let form = UserForm(name: "John", age: 25)
-
-// Add validation rules to the form fields
-form.name.rules = [RequiredRule(EmptyValueError())]
-form.age.rules = [GreaterThanRule(18, error: AgeTooLowError())]
-
-// Perform validation
-do {
-    try form.validate()
-    print("Form is valid!")
-} catch {
-    print("Validation failed: \(error)")
+@Observable
+final class UserForm: Formidable {
+    
+    // MARK: - Public Properties
+    
+    var nameField: FormField<String>
+    var ageField: FormField<Int>
+    
+    // MARK: - Initialization
+    
+    init(_ name: String, age: Int) {
+        nameField = FormField(name)
+        ageField = FormField(age)
+        
+        defer {
+            setupRules()
+        }
+    }
+    
+    // MARK: - Public Methods
+    
+    func submit() throws -> (name: String, age: Int) {
+        try validate()
+        return (name: nameField.value, age: ageField.value)
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setupRules() {
+        nameField.rules = [RequiredRule(ValidationError.isRequired)]
+        ageField.rules = [GreaterThanRule(18, error: ValidationError.ageTooLow)]
+    }
 }
 
-// Reset the form fields to their original values
-form.reset()
+struct UserFormView: View {
+    
+    @State private var form = UserForm("", age: 0)
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("Name", text: $form.nameField.value)
+                        .field($form.nameField)
+                    
+                    Picker("Age", selection: $form.ageField.value) {
+                        ForEach([10, 18, 36], id: \.self) { age in
+                            Text("\(age)")
+                        }
+                    }
+                    .field($form.ageField)
+                }
+            }
+            .navigationTitle("User")
+            .toolbar {
+                ToolbarItemGroup {
+                    Button(action: reset) {
+                        Text("Reset")
+                    }
+                    .disabled(form.isDisabled)
+                    
+                    Button(action: save) {
+                        Text("Save")
+                    }
+                }
+            }
+            .onAppear {
+                UITextField.appearance().clearButtonMode = .whileEditing
+            }
+        }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func reset() {
+        form.reset()
+    }
+    
+    private func save() {
+        do {
+            let data = try form.submit()
+            print(data)
+        } catch {
+            print(error)
+        }
+    }
+}
+
+#Preview {
+    UserFormView()
+}
+```
