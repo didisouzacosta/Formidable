@@ -4,7 +4,7 @@
 
 <h1 align="center">Formidable</h1>
 
-## What is Formidable?
+### What is Formidable?
 
 `Formidable` is a protocol designed for objects that manage forms composed of multiple `FormField` components. It provides built-in functionality for validating, resetting, and checking the validity of form fields.
 
@@ -12,13 +12,13 @@ https://github.com/user-attachments/assets/2aab4a21-b7ff-4526-a73b-7bba02a7f070
 
 ---
 
-## Requirements
+### Requirements
 
 | Platform                                             | Minimum Swift Version | 
 | ---------------------------------------------------- | --------------------- |
 | iOS 17.0+ / macOS 15.0+ / tvOS 17.0+ | Swift 5 / Xcode 15.0
 
-## Instalation
+#### Instalation
 
 ### Swift Package Manager
 
@@ -33,7 +33,7 @@ dependencies: [
 
 ---
 
-## Key Features
+### Key Features
 - **Validation**: The `validate()` method checks all fields and throws an error if any fail validation.
 - **Reset**: The `reset()` method restores all fields to their original values.
 - **Validity Check**: The `isValid` computed property determines whether all fields are valid.
@@ -44,7 +44,7 @@ By adopting `Formidable`, you can create structured forms with reliable state ma
 
 ---
 
-## FormField
+### FormField
 
 The `FormField` class represents a form field, managing its value, validation rules, and change tracking.
 
@@ -73,7 +73,7 @@ For instance, you can require an age field to be greater than 18.
 
 ---
 
-## Example Usage
+### Example Usage
 
 ```swift
 import SwiftUI
