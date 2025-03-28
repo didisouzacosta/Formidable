@@ -4,6 +4,8 @@
 
 <h1 align="center">Formidable</h1>
 
+What is Formidable?
+
 `Formidable` is a protocol designed for objects that manage forms composed of multiple `FormField` components. It provides built-in functionality for validating, resetting, and checking the validity of form fields.
 
 https://github.com/user-attachments/assets/2aab4a21-b7ff-4526-a73b-7bba02a7f070
