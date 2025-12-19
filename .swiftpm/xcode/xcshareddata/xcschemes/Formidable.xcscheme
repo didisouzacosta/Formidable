@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A9E8FA4B2D4B99B6007487B4"
-               BuildableName = "Formidable Demo.app"
-               BlueprintName = "FormidableDemo"
-               ReferencedContainer = "container:FormidableDemo.xcodeproj">
+               BlueprintIdentifier = "Formidable"
+               BuildableName = "Formidable"
+               BlueprintName = "Formidable"
+               ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -27,23 +27,17 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
-      <TestPlans>
-         <TestPlanReference
-            reference = "container:FormidableDemoTests/FormidableDemo.xctestplan"
-            default = "YES">
-         </TestPlanReference>
-      </TestPlans>
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
       <Testables>
          <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
+            skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A9419BCA2D55955800C67BF9"
-               BuildableName = "FormidableDemoTests.xctest"
-               BlueprintName = "FormidableDemoTests"
-               ReferencedContainer = "container:FormidableDemo.xcodeproj">
+               BlueprintIdentifier = "FormidableTests"
+               BuildableName = "FormidableTests"
+               BlueprintName = "FormidableTests"
+               ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -58,16 +52,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A9E8FA4B2D4B99B6007487B4"
-            BuildableName = "Formidable Demo.app"
-            BlueprintName = "FormidableDemo"
-            ReferencedContainer = "container:FormidableDemo.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -75,16 +59,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A9E8FA4B2D4B99B6007487B4"
-            BuildableName = "Formidable Demo.app"
-            BlueprintName = "FormidableDemo"
-            ReferencedContainer = "container:FormidableDemo.xcodeproj">
+            BlueprintIdentifier = "Formidable"
+            BuildableName = "Formidable"
+            BlueprintName = "Formidable"
+            ReferencedContainer = "container:">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
