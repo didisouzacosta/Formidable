@@ -10,6 +10,7 @@ import Foundation
 
 @testable import Formidable
 
+@MainActor
 struct MensurableTests {
     
     @Test func ensureTheValueLengthConsistency() throws {

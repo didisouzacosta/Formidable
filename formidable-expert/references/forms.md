@@ -6,6 +6,7 @@ Any class managing form fields should conform to `Formidable`.
 
 - **Observable**: Must use `@Observable` (iOS 17+).
 - **Properties**: Fields should be of type `FormField<Value>`.
+- **Synchronization**: `FormField` supports `Binding<Value>` in the `init` for direct data synchronization with external models.
 - **Initialization**: Rules should be configured in the `init`, preferably within a `defer` block or a `setupRules()` method.
 
 ```swift

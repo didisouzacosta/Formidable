@@ -71,12 +71,6 @@ public final class FormField<Value: Equatable>: FormFieldRepresentable {
     /// An optional closure to transform the field's value dynamically.
     public var transform: ((Value) -> Value)?
     
-    /// A closure that is triggered whenever the field's value changes.
-    /// - Parameters:
-    ///   - oldValue: The previous value of the field.
-    ///   - newValue: The new value of the field.
-    public var valueChange: ((Value, Value) -> Void)?
-    
     /// Indicates whether validation errors should be shown.
     public var showErrors = false
     
@@ -86,22 +80,55 @@ public final class FormField<Value: Equatable>: FormFieldRepresentable {
     /// The current value of the field. The `transform` closure is applied if provided.
     public var value: Value {
         get { transform?(_value) ?? _value }
-        set { _value = newValue }
+        set {
+            _value = newValue
+            showErrors = true
+        }
     }
     
     // MARK: - Private Variables
     
     private var _value: Value {
-        didSet {
-            guard oldValue != value else { return }
-            valueChange?(oldValue, value)
-            showErrors = true
+        get { _externalValue?.wrappedValue ?? _internalValue }
+        set {
+            if let _externalValue {
+                _externalValue.wrappedValue = newValue
+            } else {
+                _internalValue = newValue
+            }
         }
     }
     
+    private var _internalValue: Value
+    private var _externalValue: Binding<Value>?
+    
     // MARK: - Initializers
     
-    /// Initializes a new form field with the given parameters.
+    /// Initializes a new form field with an external binding.
+    ///
+    /// - Parameters:
+    ///   - value: A `Binding` to the source value.
+    ///   - isHidden: A flag indicating whether the field is initially hidden. Defaults to `false`.
+    ///   - isDisabled: A flag indicating whether the field is initially disabled. Defaults to `false`.
+    ///   - rules: A collection of validation rules to apply to the field's value. Defaults to an empty array.
+    ///   - transform: An optional closure to transform the field's value dynamically. Defaults to `nil`.
+    public init(
+        _ value: Binding<Value>,
+        isHidden: Bool = false,
+        isDisabled: Bool = false,
+        rules: [any FormFieldRule] = [],
+        transform: ((Value) -> Value)? = nil
+    ) {
+        self._internalValue = value.wrappedValue
+        self._externalValue = value
+        self.isHidden = isHidden
+        self.isDisabled = isDisabled
+        self.originalValue = transform?(value.wrappedValue) ?? value.wrappedValue
+        self.rules = rules
+        self.transform = transform
+    }
+    
+    /// Initializes a new form field with a local value.
     ///
     /// - Parameters:
     ///   - value: The initial value of the field.
@@ -109,22 +136,19 @@ public final class FormField<Value: Equatable>: FormFieldRepresentable {
     ///   - isDisabled: A flag indicating whether the field is initially disabled. Defaults to `false`.
     ///   - rules: A collection of validation rules to apply to the field's value. Defaults to an empty array.
     ///   - transform: An optional closure to transform the field's value dynamically. Defaults to `nil`.
-    ///   - valueChange: A closure triggered whenever the field's value changes. Defaults to `nil`.
     public init(
         _ value: Value,
         isHidden: Bool = false,
         isDisabled: Bool = false,
         rules: [any FormFieldRule] = [],
-        transform: ((Value) -> Value)? = nil,
-        valueChanged: ((Value, Value) -> Void)? = nil
+        transform: ((Value) -> Value)? = nil
     ) {
-        self._value = value
+        self._internalValue = value
         self.isHidden = isHidden
         self.isDisabled = isDisabled
         self.originalValue = transform?(value) ?? value
         self.rules = rules
         self.transform = transform
-        self.valueChange = valueChanged
     }
     
 }

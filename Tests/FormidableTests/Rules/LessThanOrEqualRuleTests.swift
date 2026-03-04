@@ -2,6 +2,7 @@ import Testing
 
 @testable import Formidable
 
+@MainActor
 struct LessThanOrEqualRuleTests {
  
     private let error = TestError.validationError

@@ -9,6 +9,7 @@ import Testing
 
 @testable import Formidable
 
+@MainActor
 struct FormidableTests {
     
     @Test func ensureDefaultProperties() throws {

@@ -20,7 +20,6 @@ public protocol FormFieldRepresentable: ObservableObject {
     var rules: [any FormFieldRule] { get set }
     
     var transform: ((Value) -> Value)? { get set }
-    var valueChange: ((Value, Value) -> Void)? { get set }
     
 }
 

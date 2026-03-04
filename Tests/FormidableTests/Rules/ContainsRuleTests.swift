@@ -2,6 +2,7 @@ import Testing
 
 @testable import Formidable
 
+@MainActor
 struct ContainsRuleTests {
  
     private let error = TestError.validationError

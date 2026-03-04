@@ -10,6 +10,7 @@ import Foundation
 
 @testable import Formidable
 
+@MainActor
 struct EmptableTests {
     
     @Test func ensureThatValuesAreEmpty() throws {

@@ -21,7 +21,8 @@ This document defines the rules, architectural patterns, and conventions for dev
 
 ### FormField
 - Always use the `FormField<Value>` class to represent form fields.
-- **Auto-error Display**: `FormField` displays errors automatically as soon as its value changes (`didSet` on the internal `_value` property).
+- **Auto-error Display**: `FormField` displays errors automatically as soon as its value changes (`set` on the `value` property).
+- **Binding Synchronization**: `FormField` supports initialization with a `Binding<Value>`, allowing direct synchronization with external data sources.
 - **Transformations**: Use the `transform` closure to normalize data before validation/retrieval.
 - **Original Value**: `FormField` maintains the original value to support `reset()` operations.
 
@@ -50,4 +51,5 @@ This document defines the rules, architectural patterns, and conventions for dev
 
 ## 🧪 Testing
 - Every new rule or contract feature must have corresponding unit tests in `Tests/FormidableTests/`.
+- **MainActor Enforcement**: All test structures or classes must be marked with `@MainActor` to ensure consistency with the framework's threading model.
 - Test `reset`, `isModified`, `isHidden`, and `isDisabled` behaviors along with validation.

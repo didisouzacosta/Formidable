@@ -6,9 +6,11 @@
 //
 
 import Testing
+import SwiftUI
 
 @testable import Formidable
 
+@MainActor
 struct FormFieldTests {
     
     @Test func ensureDefaultProperties() throws {
@@ -20,7 +22,6 @@ struct FormFieldTests {
         #expect(field.isHidden == false)
         #expect(field.isDisabled == false)
         #expect(field.transform == nil)
-        #expect(field.valueChange == nil)
         #expect(field.isValid == true)
         #expect(field.showErrors == false)
         #expect(field.errors.count == 0)
@@ -104,23 +105,17 @@ struct FormFieldTests {
         #expect(field.isModified == false)
     }
     
-    @Test func ensureValueChangedHandlerConsistency() {
-        var wasChange = false
-        var changeCount = 0
+    @Test func ensureExternalBindingSynchronization() throws {
+        var externalValue = "Initial"
+        let binding = Binding(get: { externalValue }, set: { externalValue = $0 })
+        let field = FormField(binding)
         
-        let field = FormField(36)
-        field.valueChange = { new, old in
-            changeCount += 1
-            wasChange = new != old
-        }
+        #expect(field.value == "Initial")
         
-        field.value = 36
-        field.value = 33
-        field.value = 34
-        field.value = 35
+        field.value = "Updated"
         
-        #expect(wasChange)
-        #expect(changeCount == 3)
+        #expect(externalValue == "Updated")
+        #expect(field.value == "Updated")
     }
     
 }

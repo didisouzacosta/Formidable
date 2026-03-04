@@ -9,11 +9,11 @@ import Foundation
 
 struct User {
     
-    let name: String
-    let email: String
-    let password: String
-    let birthday: Date
-    let language: Language
+    var name: String
+    var email: String
+    var password: String
+    var birthday: Date
+    var language: Language
     
     init(
         _ name: String,

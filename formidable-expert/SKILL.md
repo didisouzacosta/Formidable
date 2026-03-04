@@ -13,12 +13,12 @@ Follow the appropriate guide based on your task:
 
 - **Create New Rules**: See [references/rules.md](references/rules.md) for `FormFieldRule` implementation patterns (Static vs KeyPath) and `AnyRule` usage.
 - **Form Architecture**: See [references/forms.md](references/forms.md) for structuring classes that conform to `Formidable` and integrating with SwiftUI views.
-- **Unit Testing**: Ensure every new rule has tests in `Tests/FormidableTests/Rules/` and every new field in `Tests/FormidableTests/FormFieldTests.swift`.
+- **Unit Testing**: Ensure every new rule has tests in `Tests/FormidableTests/Rules/` and every new field in `Tests/FormidableTests/FormFieldTests.swift`. All test structures must be marked with `@MainActor`.
 
 ## Core Concepts
 
-- **FormField<Value>**: The main `@Observable` class that manages value, rules, and error state.
-- **Validation Flow**: `FormField` displays errors in the internal value's `didSet`. The form's `validate()` method triggers `showErrors = true` for all fields.
+- **FormField<Value>**: The main `@Observable` class that manages value, rules, and error state. Supports initialization with `Binding<Value>` for direct data synchronization.
+- **Validation Flow**: `FormField` displays errors in the `set` of the `value` property. The form's `validate()` method triggers `showErrors = true` for all fields.
 - **Transformation**: Use the `transform` parameter in the `FormField` init to normalize data (e.g., `trimmingCharacters`, `uppercased`).
 
 ## Code Standards

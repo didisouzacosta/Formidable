@@ -3,6 +3,7 @@ import SwiftUI
 
 @testable import Formidable
 
+@MainActor
 struct RequiredRuleTests {
  
     private let error = TestError.validationError

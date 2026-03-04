@@ -53,7 +53,6 @@ The `FormField` class represents a form field, managing its value, validation ru
 - **`isDisabled`**: Disables editing (default: `false`).
 - **`rules`**: An array of validation rules (`FormFieldRule` conforming types).
 - **`transform`**: An optional closure that modifies the value before retrieval.
-- **`valueChanged`**: A closure triggered when the value changes.
 - **`showErrors`**: Controls whether validation errors should be displayed.
 - **`originalValue`**: Stores the initial value for reset purposes.
 - **`value`**: Holds the current field value, applying transformations if set.

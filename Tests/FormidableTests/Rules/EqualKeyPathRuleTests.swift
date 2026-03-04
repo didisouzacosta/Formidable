@@ -2,6 +2,7 @@ import Testing
 
 @testable import Formidable
 
+@MainActor
 struct EqualKeyPathRuleTests {
  
     private let error = TestError.validationError
