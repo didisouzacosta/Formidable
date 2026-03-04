@@ -27,7 +27,7 @@ https://github.com/user-attachments/assets/2aab4a21-b7ff-4526-a73b-7bba02a7f070
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/didisouzacosta/Formidable", .upToNextMajor(from: "1.1.0"))
+    .package(url: "https://github.com/didisouzacosta/Formidable", .upToNextMajor(from: "1.2.0"))
 ]
 ```
 
@@ -223,4 +223,3 @@ Once installed, Gemini CLI will automatically activate the skill whenever you re
 You can also manage installed skills using:
 - `/skills list`: Lists all active skills.
 - `/skills help`: Shows help for skill management.
-
