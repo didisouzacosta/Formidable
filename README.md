@@ -27,7 +27,7 @@ https://github.com/user-attachments/assets/2aab4a21-b7ff-4526-a73b-7bba02a7f070
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/didisouzacosta/Formidable", .upToNextMajor(from: "1.0.0"))
+    .package(url: "https://github.com/didisouzacosta/Formidable", .upToNextMajor(from: "1.2.0"))
 ]
 ```
 
@@ -183,3 +183,43 @@ struct UserFormView: View {
     UserFormView()
 }
 ```
+
+---
+
+### 🤖 Agent Skills (Gemini CLI)
+
+This project includes a custom **Agent Skill** to assist in development following the `Formidable` architectural patterns.
+
+#### What are Agent Skills?
+Agent Skills are specialized knowledge modules that extend **Gemini CLI** capabilities. They transform the agent from a generic AI into a domain expert for the project, providing workflows, templates, and procedural rules.
+
+#### Benefits
+- **Architectural Consistency**: Ensures new rules and forms strictly follow project standards.
+- **Context Efficiency**: The agent only loads skill instructions when necessary, saving resources and keeping the conversation focused.
+- **Intelligent Automation**: Quick access to code templates (boilerplates) for new features.
+
+#### Installation
+To install the `formidable-expert` skill included in this repository:
+
+```bash
+# Install in Workspace scope (Recommended for this project)
+gemini skills install formidable-expert.skill --scope workspace
+
+# Or global user installation
+gemini skills install formidable-expert.skill --scope user
+```
+
+After installation, you **must** run the following command in the Gemini CLI interactive terminal to activate the skill:
+```bash
+/skills reload
+```
+
+#### How to Use
+Once installed, Gemini CLI will automatically activate the skill whenever you request tasks related to `Formidable`, such as:
+- "Create a new validation rule for CNPJ."
+- "Migrate this SwiftUI form to the Formidable pattern."
+- "How to structure a form with cross-validation?"
+
+You can also manage installed skills using:
+- `/skills list`: Lists all active skills.
+- `/skills help`: Shows help for skill management.
