@@ -185,40 +185,36 @@ struct UserFormView: View {
 
 ---
 
-### 🤖 Agent Skills (Gemini CLI)
+### 🤖 Agent Skill (Codex)
 
 This project includes a custom **Agent Skill** to assist in development following the `Formidable` architectural patterns.
 
 #### What are Agent Skills?
-Agent Skills are specialized knowledge modules that extend **Gemini CLI** capabilities. They transform the agent from a generic AI into a domain expert for the project, providing workflows, templates, and procedural rules.
+
+Agent Skills extend **Codex** with reusable instructions, resources, and optional scripts for specialized workflows. Codex loads the full instructions only when the skill is selected, keeping the project guidance available without adding it to every prompt.
 
 #### Benefits
+
 - **Architectural Consistency**: Ensures new rules and forms strictly follow project standards.
 - **Context Efficiency**: The agent only loads skill instructions when necessary, saving resources and keeping the conversation focused.
 - **Intelligent Automation**: Quick access to code templates (boilerplates) for new features.
 
 #### Installation
-To install the `formidable-expert` skill included in this repository:
 
-```bash
-# Install in Workspace scope (Recommended for this project)
-gemini skills install formidable-expert.skill --scope workspace
+Ask Codex to install the [`formidable-expert`](formidable-expert) skill directly from this repository:
 
-# Or global user installation
-gemini skills install formidable-expert.skill --scope user
+```text
+Use $skill-installer to install the formidable-expert skill from https://github.com/didisouzacosta/Formidable/tree/main/formidable-expert
 ```
 
-After installation, you **must** run the following command in the Gemini CLI interactive terminal to activate the skill:
-```bash
-/skills reload
-```
+Codex detects newly installed skills automatically. If the skill does not appear, restart Codex. Agent Skills are available in the Codex desktop app, CLI, and IDE extension. See the [Codex Agent Skills documentation](https://learn.chatgpt.com/docs/build-skills) for additional installation and configuration options.
 
 #### How to Use
-Once installed, Gemini CLI will automatically activate the skill whenever you request tasks related to `Formidable`, such as:
-- "Create a new validation rule for CNPJ."
-- "Migrate this SwiftUI form to the Formidable pattern."
-- "How to structure a form with cross-validation?"
 
-You can also manage installed skills using:
-- `/skills list`: Lists all active skills.
-- `/skills help`: Shows help for skill management.
+Invoke the skill explicitly with `$formidable-expert`, or let Codex select it automatically when your request matches its description. For example:
+
+- "Use `$formidable-expert` to create a new validation rule for CNPJ."
+- "Use `$formidable-expert` to migrate this SwiftUI form to the Formidable pattern."
+- "Use `$formidable-expert` to show how to structure a form with cross-validation."
+
+In the CLI or IDE extension, run `/skills` or type `$` to browse the available skills.
