@@ -5,56 +5,45 @@
 //  Created by Adriano Costa on 04/02/25.
 //
 
-/// A validation rule that ensures a value is greater than a reference value obtained via a `KeyPath` from a root object.
+/// A rule that requires a value to be strictly greater than a reference value read through a key path.
 ///
-/// ### Example Usage:
+/// # Example
+///
 /// ```swift
-/// struct FormData {
-///     let minAge: Int
+/// enum ValidationError: Error {
+///     case tooSmall
 /// }
 ///
-/// let formData = FormData(minAge: 18)
-/// let rule = GreaterThanKeyPathRule(formData, keyPath: \ .minAge, error: ValidationError.tooYoung)
-///
-/// do {
-///     try rule.validate(19) // ✅ Passes validation
-///     try rule.validate(16) // ❌ Throws ValidationError.tooYoung    
-/// } catch {
-///     print(error)
+/// final class Limits {
+///     var minimum = 10
 /// }
+///
+/// let limits = Limits()
+/// let rule = GreaterThanKeyPathRule(limits, keyPath: \.minimum, error: ValidationError.tooSmall)
+/// try rule.validate(11)
 /// ```
-///
-/// - Parameters:
-///   - Root: The type of the root object containing the reference value.
-///   - Value: The type of value being validated, which must conform to `Comparable`.
 public struct GreaterThanKeyPathRule<Root, Value: Comparable>: FormFieldRule {
-    
+
+    // MARK: - Public Properties
+
+    /// A transformation of the reference value before comparison.
     public typealias Transform = (Value) -> Value
-    
-    // MARK: - Public Variables
-    
-    /// A closure to transform the reference value before comparison, if needed.
+    /// An optional transformation applied to the current reference value.
     public var transform: Transform?
-    
-    // MARK: - Private Variables
-    
+
+    // MARK: - Private Properties
+
     private let root: Root
     private let keyPath: KeyPath<Root, Value>
-    private let error: Error
-    
-    // MARK: - Initializers
-    
-    /// Initializes the rule with a root object, key path, validation error, and an optional transformation.
-    ///
-    /// - Parameters:
-    ///   - root: The root object containing the reference value.
-    ///   - keyPath: The `KeyPath` to access the reference value.
-    ///   - error: The error to throw if validation fails.
-    ///   - transform: An optional closure to transform the reference value before comparison.
+    private let error: any Error
+
+    // MARK: - Initializer
+
+    /// Creates a strict greater-than rule backed by a key path.
     public init(
         _ root: Root,
         keyPath: KeyPath<Root, Value>,
-        error: Error,
+        error: any Error,
         transform: Transform? = nil
     ) {
         self.root = root
@@ -62,22 +51,19 @@ public struct GreaterThanKeyPathRule<Root, Value: Comparable>: FormFieldRule {
         self.error = error
         self.transform = transform
     }
-    
+
     // MARK: - Public Methods
-    
-    /// Validates that the given value is strictly greater than the reference value obtained via the key path.
-    ///
-    /// - Parameter value: The value to validate.
-    /// - Throws: The specified error if the validation fails.
+
+    /// Validates that the supplied value is strictly greater than the transformed reference value.
     public func validate(_ value: Value?) throws {
         guard let value else { return }
-        
+
         let referenceValue = root[keyPath: keyPath]
         let transformedValue = transform?(referenceValue) ?? referenceValue
-        
-        if value <= transformedValue  {
+
+        if value <= transformedValue {
             throw error
         }
     }
-    
+
 }

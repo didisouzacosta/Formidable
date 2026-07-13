@@ -117,5 +117,72 @@ struct FormFieldTests {
         #expect(externalValue == "Updated")
         #expect(field.value == "Updated")
     }
+
+    @Test func assigningValueEnablesErrorsAndResetClearsThem() {
+        let field = FormField("Initial")
+
+        field.value = "Updated"
+
+        #expect(field.showErrors)
+
+        field.reset()
+
+        #expect(field.showErrors == false)
+    }
+
+    @Test func directExternalChangeDoesNotEnableErrors() {
+        var externalValue = "Initial"
+        let binding = Binding(get: { externalValue }, set: { externalValue = $0 })
+        let field = FormField(binding)
+
+        externalValue = "External update"
+
+        #expect(field.value == "External update")
+        #expect(field.showErrors == false)
+    }
+
+    @Test func resetRestoresExternalBinding() {
+        var externalValue = "Initial"
+        let binding = Binding(get: { externalValue }, set: { externalValue = $0 })
+        let field = FormField(binding)
+
+        field.value = "Updated"
+        field.reset()
+
+        #expect(externalValue == "Initial")
+        #expect(field.value == "Initial")
+        #expect(field.showErrors == false)
+    }
+
+    @Test func resetDoesNotApplyNonIdempotentTransformTwice() {
+        let field = FormField("Initial", transform: { $0 + "!" })
+
+        #expect(field.originalValue == "Initial!")
+
+        field.value = "Updated"
+        #expect(field.value == "Updated!")
+        #expect(field.isModified)
+
+        field.reset()
+
+        #expect(field.value == "Initial!")
+        #expect(field.originalValue == "Initial!")
+        #expect(field.isModified == false)
+    }
+
+    @Test func resetPreservesOriginalValueAndModificationState() {
+        let field = FormField(10, transform: { $0 * 2 })
+
+        field.value = 15
+
+        #expect(field.originalValue == 20)
+        #expect(field.isModified)
+
+        field.reset()
+
+        #expect(field.originalValue == 20)
+        #expect(field.value == 20)
+        #expect(field.isModified == false)
+    }
     
 }

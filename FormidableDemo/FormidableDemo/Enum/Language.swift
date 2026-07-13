@@ -6,26 +6,38 @@
 //
 
 import Formidable
+import SwiftUI
 
 enum Language: String, CaseIterable {
-    case none, portuguese, english, spanish
+
+    case none
+    case portuguese
+    case english
+    case spanish
+
 }
 
 extension Language {
-    
-    var detail: String {
-        rawValue.capitalized
+
+    // MARK: - Public Properties
+
+    var title: LocalizedStringKey {
+        switch self {
+        case .none: "Select a language"
+        case .portuguese: "Portuguese"
+        case .english: "English"
+        case .spanish: "Spanish"
+        }
     }
-    
+
 }
 
 extension Language: Emptable {
-    
+
+    // MARK: - Public Properties
+
     var isEmpty: Bool {
-        switch self {
-        case .none: true
-        default: false
-        }
+        self == .none
     }
-    
+
 }

@@ -5,65 +5,55 @@
 //  Created by Adriano Costa on 04/02/25.
 //
 
-/// A validation rule that ensures that value contains in collection.
+/// A rule that requires a non-`nil` value to exist in a fixed collection.
 ///
-/// This rule checks whether the input value contains in a predefined collection of values.
-/// If the value not exists in the collection, the specified error is thrown.
+/// A `nil` value passes so optionality can be handled independently by ``RequiredRule``.
 ///
 /// # Example
-/// ```swift
-/// let items = ["apple", "banana", "cherry"]
-/// let rule = ContainsRule(in: items, error: ValidationError.notUnique)
-/// do {
-///     try rule.validate("banana") // ✅ Valid (not contains in the collection)
-///     try rule.validate("orange") // ❌ Throws ValidationError.notContains
-/// } catch {
-///     print("Validation failed: \(error)")
-/// }
-/// ```
 ///
-/// # Notes
-/// - If the value is `nil`, validation passes automatically (no need to check uniqueness).
-/// - This rule ensures that the value contains in the collection.
-/// - Can be used for strings, numbers, or any type conforming to `Equatable`.
+/// ```swift
+/// enum ValidationError: Error {
+///     case unsupportedValue
+/// }
+///
+/// let rule = ContainsRule(in: ["standard", "premium"], error: ValidationError.unsupportedValue)
+/// try rule.validate("premium")
+/// ```
 public struct ContainsRule<Value: Equatable>: FormFieldRule {
-    
+
+    // MARK: - Public Properties
+
+    /// The collection type searched by the rule.
     public typealias Items = [Value]
-    
+
     // MARK: - Private Properties
-    
+
     private let items: Items
-    private let error: Error
-    
-    // MARK: - Initializers
-    
-    /// Creates a rule that ensures a value is unique within a specified collection.
+    private let error: any Error
+
+    // MARK: - Initializer
+
+    /// Creates a rule that searches a fixed collection.
+    ///
+    /// The labeled first parameter is retained for source compatibility.
     ///
     /// - Parameters:
-    ///   - items: The collection of values to check contains against.
-    ///   - error: The error to throw if validation fails.
-    public init(in items: Items, error: Error) {
+    ///   - items: The collection in which the value must exist.
+    ///   - error: The error thrown when the collection does not contain the value.
+    public init(in items: Items, error: any Error) {
         self.items = items
         self.error = error
     }
-    
+
     // MARK: - Public Methods
-    
-    /// Validates that the given value is unique within the collection.
-    ///
-    /// - Parameter value: The value to validate.
-    /// - Throws: The specified error if the value not contains in the collection.
+
+    /// Validates that the collection contains the supplied value.
     public func validate(_ value: Value?) throws {
         guard let value else { return }
-        
+
         if !items.contains(value) {
             throw error
         }
     }
-    
+
 }
-
-
-
-
-

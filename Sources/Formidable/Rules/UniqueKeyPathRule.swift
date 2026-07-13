@@ -5,57 +5,60 @@
 //  Created by Adriano Costa on 26/01/25.
 //
 
-/// A validation rule that ensures a value is unique within a collection obtained via a `KeyPath`.
+/// A rule that requires a value not to exist in a collection read from a root object's key path.
 ///
-/// ### Example Usage:
+/// The reference collection is read on every validation, so changes made through a reference-type root are
+/// reflected dynamically. A `nil` value passes validation.
+///
+/// # Example
+///
 /// ```swift
-/// struct UserForm {
-///     let registeredEmails: [String]
+/// enum ValidationError: Error {
+///     case duplicateEmail
 /// }
 ///
-/// let form = UserForm(registeredEmails: ["test@example.com", "user@example.com"])
-/// let rule = UniqueKeyPathRule(form, keyPath: \UserForm.registeredEmails, error: ValidationError.duplicateEntry)
-///
-/// do {
-///     try rule.validate("new@example.com") // ✅ Passes validation
-///     try rule.validate("test@example.com") // ❌ Throws ValidationError.duplicateEntry
-/// } catch {
-///     print(error)
+/// final class Directory {
+///     var emails = ["registered@example.com"]
 /// }
+///
+/// let directory = Directory()
+/// let rule = UniqueKeyPathRule(
+///     directory,
+///     keyPath: \.emails,
+///     error: ValidationError.duplicateEmail
+/// )
+/// try rule.validate("new@example.com")
 /// ```
-///
-/// - Parameters:
-///   - Root: The root object containing the collection of reference values.
-///   - Value: An `Equatable` type for validation.
 public struct UniqueKeyPathRule<Root, Value: Equatable>: FormFieldRule {
-    
-    public typealias Values = [Value]
-    public typealias Transform = (Values) -> Values
-    
+
     // MARK: - Public Properties
-    
-    /// Optional transformation closure applied to the reference values before validation.
+
+    /// The collection read from the root object.
+    public typealias Values = [Value]
+    /// A transformation applied to the reference collection before validation.
+    public typealias Transform = (Values) -> Values
+    /// An optional transformation applied to the current reference collection.
     public var transform: Transform?
-    
+
     // MARK: - Private Properties
-    
+
     private let root: Root
     private let keyPath: KeyPath<Root, Values>
-    private let error: Error
-    
-    // MARK: - Initializers
-    
-    /// Initializes a new rule to validate that a value is unique within a collection.
+    private let error: any Error
+
+    // MARK: - Initializer
+
+    /// Creates a rule backed by a collection key path.
     ///
     /// - Parameters:
     ///   - root: The object containing the reference collection.
-    ///   - keyPath: The `KeyPath` pointing to the collection within `root`.
-    ///   - error: The error to throw if validation fails.
-    ///   - transform: An optional closure to modify the collection before validation.
+    ///   - keyPath: The key path to the collection.
+    ///   - error: The error thrown when the collection already contains the value.
+    ///   - transform: An optional transformation of the reference collection.
     public init(
         _ root: Root,
         keyPath: KeyPath<Root, Values>,
-        error: Error,
+        error: any Error,
         transform: Transform? = nil
     ) {
         self.root = root
@@ -63,27 +66,19 @@ public struct UniqueKeyPathRule<Root, Value: Equatable>: FormFieldRule {
         self.error = error
         self.transform = transform
     }
-    
+
     // MARK: - Public Methods
-    
-    /// Validates that the given value is unique within the reference collection.
-    ///
-    /// - Parameter value: The value to validate.
-    /// - Throws: The specified error if validation fails.
+
+    /// Validates that the current reference collection does not contain the supplied value.
     public func validate(_ value: Value?) throws {
         guard let value else { return }
-        
+
         let referenceValue = root[keyPath: keyPath]
         let transformedValue = transform?(referenceValue) ?? referenceValue
-        
+
         if transformedValue.contains(value) {
             throw error
         }
     }
-    
+
 }
-
-
-
-
-

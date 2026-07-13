@@ -5,60 +5,47 @@
 //  Created by Adriano Costa on 26/01/25.
 //
 
-/// A validation rule that ensures a given value meets a minimum length requirement.
-///
-/// This rule checks whether the length of the input value is **greater than or equal to** a specified minimum.
-/// If the input value is shorter, the specified error is thrown.
+/// A rule that requires a measurable value to meet a minimum length.
 ///
 /// # Example
-/// ```swift
-/// let rule = MinLengthRule(in: 5, error: ValidationError.tooShort)
-/// do {
-///     try rule.validate(6) // ✅ Valid (6 ≥ 5)
-///     try rule.validate(4) // ❌ Throws ValidationError.tooShort
-/// } catch {
-///     print("Validation failed: \(error)")
-/// }
-/// ```
 ///
-/// # Notes
-/// - If `value` is `nil`, validation passes automatically.
-/// - This rule ensures **greater than or equal to** (`≥`), not strictly greater than (`>`).
-/// - Can be used for strings, arrays, or any type conforming to `Mensurable`.
+/// ```swift
+/// enum ValidationError: Error {
+///     case tooShort
+/// }
+///
+/// let rule = MinLengthRule(3, error: ValidationError.tooShort)
+/// try rule.validate("Swift")
+/// ```
 public struct MinLengthRule: FormFieldRule {
-    
-    public typealias Value = Mensurable
-    
+
+    // MARK: - Public Properties
+
+    /// The existential value type accepted by the rule.
+    public typealias Value = any Mensurable
+
     // MARK: - Private Properties
-    
+
     private let referenceValue: Value
-    private let error: Error
-    
-    // MARK: - Initializers
-    
-    public init(_ referenceValue: Value, error: Error) {
+    private let error: any Error
+
+    // MARK: - Initializer
+
+    /// Creates a minimum-length rule from a measurable reference value.
+    public init(_ referenceValue: Value, error: any Error) {
         self.referenceValue = referenceValue
         self.error = error
     }
-    
+
     // MARK: - Public Methods
-    
-    /// Validates that the given value meets the minimum length requirement.
-    ///
-    /// - Parameter value: The value to validate.
-    /// - Throws: The specified error if the value is shorter than the minimum required length.
+
+    /// Validates that the supplied measure is at least the reference measure. A `nil` value passes.
     public func validate(_ value: Value?) throws {
         guard let value else { return }
-        
+
         if value.length < referenceValue.length {
             throw error
         }
     }
-    
+
 }
-
-
-
-
-
-

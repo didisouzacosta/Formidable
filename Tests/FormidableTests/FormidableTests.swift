@@ -114,7 +114,67 @@ struct FormidableTests {
         #expect(form.emailField.isDisabled == false)
         #expect(form.passwordField.isDisabled == false)
     }
+
+    @Test func resetUsesConcreteFieldWitnessThroughExistential() {
+        let form = TransformedForm(value: "Initial")
+
+        form.field.value = "Updated"
+        form.reset()
+
+        #expect(form.field.value == "Initial!")
+        #expect(form.field.isModified == false)
+        #expect(form.field.showErrors == false)
+    }
+
+    @Test func validateThrowsFirstErrorInFieldOrder() {
+        let form = SignInForm(email: "", password: "")
+        form.emailField.rules = [RequiredRule(FormValidationError.email)]
+        form.passwordField.rules = [RequiredRule(FormValidationError.password)]
+
+        #expect(throws: FormValidationError.email) {
+            try form.validate()
+        }
+    }
+
+    @Test func validateEnablesErrorsForEveryField() {
+        let form = SignInForm(email: "", password: "valid")
+        form.emailField.rules = [RequiredRule(FormValidationError.email)]
+
+        #expect(throws: FormValidationError.email) {
+            try form.validate()
+        }
+
+        #expect(form.emailField.showErrors)
+        #expect(form.passwordField.showErrors)
+    }
+
+    @Test func fullyDisabledFormReturnsWithoutError() throws {
+        var form = SignInForm(email: "", password: "")
+        form.emailField.rules = [RequiredRule(FormValidationError.email)]
+        form.passwordField.rules = [RequiredRule(FormValidationError.password)]
+        form.isDisabled = true
+
+        try form.validate()
+
+        #expect(form.emailField.showErrors == false)
+        #expect(form.passwordField.showErrors == false)
+    }
     
+}
+
+fileprivate enum FormValidationError: Error {
+    case email
+    case password
+}
+
+fileprivate final class TransformedForm: Formidable {
+
+    var field: FormField<String>
+
+    init(value: String) {
+        self.field = FormField(value, transform: { $0 + "!" })
+    }
+
 }
 
 fileprivate final class SignInForm: Formidable {

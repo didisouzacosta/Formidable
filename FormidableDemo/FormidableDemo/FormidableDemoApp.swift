@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct FormidableDemoApp: App {
+
+    // MARK: - Public Properties
+
     var body: some Scene {
         WindowGroup {
             SignUpFormView()
         }
     }
+
 }

@@ -6,23 +6,23 @@
 //
 
 struct AnyRule: FormFieldRule {
-    
-    // MARK: - Private Variables
-    
-    private let _validate: (Any?) throws -> Void
-    
-    // MARK: - Life Cycle
-    
-    init<T: FormFieldRule>(_ rule: T) {
-        _validate = { value in
-            try rule.validate(value as? T.Value)
+
+    // MARK: - Private Properties
+
+    private let validateValue: (Any?) throws -> Void
+
+    // MARK: - Initializer
+
+    init<Rule: FormFieldRule>(_ rule: Rule) {
+        self.validateValue = { value in
+            try rule.validate(value as? Rule.Value)
         }
     }
-    
+
     // MARK: - Public Methods
-    
+
     func validate(_ value: Any?) throws {
-        try _validate(value)
+        try validateValue(value)
     }
-    
+
 }

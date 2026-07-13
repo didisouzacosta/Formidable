@@ -8,49 +8,56 @@
 import SwiftUI
 
 struct FormFieldContainer<Content: View, Form: FormFieldRepresentable>: View {
-    
-    // MARK: - Private Variables
-    
+
+    // MARK: - Bindings
+
     @Binding private var field: Form
-    
-    private let content: () -> Content
-    private let accessibilityLabel: String
-    
-    private var messages: [String] {
-        (field.showErrors ? field.errors : []).map { $0.localizedDescription }
-    }
-    
-    // MARK: - Life Cycle
-    
-    init(
-        _ field: Binding<Form>,
-        accessibilityLabel: String,
-        @ViewBuilder _ content: @escaping () -> Content
-    ) {
-        _field = field
-        
-        self.accessibilityLabel = accessibilityLabel
-        self.content = content
-    }
-    
+
+    // MARK: - Public Properties
+
+    private let content: Content
+    private let accessibilityLabel: LocalizedStringKey
+
+    // MARK: - Body
+
     var body: some View {
         VStack(alignment: .leading) {
-            content()
-            
+            content
+
             if !messages.isEmpty {
                 VStack(alignment: .leading) {
-                    ForEach(Array(zip(messages.indices, messages)), id: \.0) { index, message in
+                    ForEach(Array(messages.enumerated()), id: \.offset) { _, message in
                         Text(message)
-                            .id(index)
                     }
                 }
                 .font(.callout)
                 .foregroundStyle(.red)
-                .accessibilityLabel(accessibilityLabel)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(Text(accessibilityLabel))
+                .accessibilityValue(Text(verbatim: messages.joined(separator: ", ")))
             }
         }
         .disabled(field.isDisabled)
         .isHidden(field.isHidden)
     }
-    
+
+    // MARK: - Private Properties
+
+    private var messages: [String] {
+        (field.showErrors ? field.errors : []).map { $0.localizedDescription }
+    }
+
+    // MARK: - Initializer
+
+    init(
+        _ field: Binding<Form>,
+        accessibilityLabel: String,
+        @ViewBuilder _ content: () -> Content
+    ) {
+        self._field = field
+
+        self.content = content()
+        self.accessibilityLabel = LocalizedStringKey(accessibilityLabel)
+    }
+
 }

@@ -1,106 +1,89 @@
 import SwiftUI
 
-/// A protocol representing an object that can be validated and reset, typically used for form-like structures.
+/// A form-management contract that discovers fields with reflection and provides validation and reset behavior.
 ///
-/// The `Formidable` protocol is intended for objects that contain form fields, offering common functionality
-/// such as validation, error handling, and field resetting. It ensures that any object conforming to it can
-/// handle these operations consistently, making it easier to manage form-like structures in the UI.
+/// `Formidable` has no actor isolation requirement. Its default implementation reflects the conforming value's
+/// stored properties in declaration order and manages those conforming to ``FormFieldRepresentable``.
 ///
-/// The protocol is marked with `@MainActor`, ensuring that the operations occur on the main thread.
-///
-/// ## Example Usage
+/// # Example
 ///
 /// ```swift
-///
 /// enum ValidationError: Error {
-///     case isRequired
+///     case required
 /// }
 ///
 /// @Observable
-/// struct UserForm: Formidable {
-///
-///     var name: FormFieldValue<String>
-///     var age: FormFieldValue<Int>
-///
-///     init(_ name: String, age: Int) {
-///         self.name = FormFieldValue(name)
-///         self.age = FormFieldValue(age)
-///     }
-///
-///     func setupRules() {
-///         name.rules = [RequiredRule(ValidationError.isRequired)]
-///     }
-///
+/// final class UserForm: Formidable {
+///     var name = FormField(
+///         "",
+///         rules: [RequiredRule(ValidationError.required)]
+///     )
 /// }
 ///
-/// let form = UserForm("John", age: 30)
-///
-/// TextField("Name", text: $form.name)
-///
-/// do {
-///     try form.validate() // Throws error if any field validation fails
-/// } catch {
-///     print("Validation failed: \(error)")
-/// }
-///
-/// form.reset() // Resets the form fields to their original values
+/// let form = UserForm()
+/// try form.validate()
+/// form.reset()
 /// ```
 public protocol Formidable {}
 
-public extension Formidable {
-    
-    /// A property that indicates whether all form fiels are disabled.
-    /// Returns `true` if there all disabled, `false` otherwise.
-    var isDisabled: Bool {
+extension Formidable {
+
+    // MARK: - Public Properties
+
+    /// Indicates whether every discovered field is disabled, and updates all fields when assigned.
+    public var isDisabled: Bool {
         get { fields.allSatisfy { $0.isDisabled } }
-        set { fields.forEach { $0.isDisabled = newValue } }
+        set {
+            for field in fields {
+                field.isDisabled = newValue
+            }
+        }
     }
-    
-    /// A computed property that indicates whether all form fields are valid.
-    /// Returns `true` if there are no errors, `false` otherwise.
-    var isValid: Bool {
+
+    /// Indicates whether every discovered field currently passes validation.
+    public var isValid: Bool {
         errors.isEmpty
     }
-    
-    /// A computed property that indicates whether all form fields are modified
-    /// Returns `true` if there are modified, `false` otherwise.
-    var isModified: Bool {
+
+    /// Indicates whether at least one discovered field differs from its original value.
+    public var isModified: Bool {
         fields.contains { $0.isModified }
     }
-    
-    /// A computed property that gathers all errors from the form fields.
-    /// Returns an array of errors, with each error potentially coming from a different field.
-    var errors: [Error] {
-        fields.flatMap { $0.errors.compactMap { $0 } }
+
+    /// The validation errors from all discovered fields, preserving field and rule order.
+    public var errors: [any Error] {
+        fields.flatMap { $0.errors }
     }
-    
-    /// A private computed property that collects all form fields from the conforming object.
-    /// Uses reflection to find properties that conform to the `FormField` protocol.
-    ///
-    /// - Returns: An array of form fields that are part of the conforming object.
-    var fields: [any FormFieldRepresentable] {
-        Mirror(reflecting: self).children.compactMap { $0.value as? any FormFieldRepresentable }
+
+    /// The fields discovered among the conforming value's stored properties.
+    public var fields: [any FormFieldRepresentable] {
+        Mirror(reflecting: self).children.compactMap { child in
+            child.value as? any FormFieldRepresentable
+        }
     }
-    
-    /// Validates the fields of the form, setting `showErrors` to `true` for each field.
-    /// Validation will only work when the form is enabled.
-    /// Throws the first error encountered in the fields, if any.
+
+    // MARK: - Public Methods
+
+    /// Enables error presentation and throws the first validation error unless every field is disabled.
     ///
-    /// - Throws: The first error from the form fields, if any.
-    func validate() throws {
+    /// - Throws: The first error in reflected field and rule order.
+    public func validate() throws {
         guard !isDisabled else { return }
-        
-        fields.forEach { $0.showErrors = true }
-        
+
+        for field in fields {
+            field.showErrors = true
+        }
+
         if let error = errors.first {
             throw error
         }
     }
-    
-    /// Resets all fields in the form to their initial values, clearing any errors.
-    func reset() {
-        fields.forEach { $0.reset() }
-    }
-    
-}
 
+    /// Resets every discovered field through its concrete protocol witness.
+    public func reset() {
+        for field in fields {
+            field.reset()
+        }
+    }
+
+}

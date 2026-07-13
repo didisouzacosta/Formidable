@@ -8,17 +8,20 @@
 import Foundation
 
 extension Date {
-    
-    func remove(years: Int, calendar: Calendar = .current) -> Date {
-        calendar.date(byAdding: .year, value: -years, to: self)!
+
+    // MARK: - Public Methods
+
+    func subtracting(years: Int, calendar: Calendar = .current) -> Date {
+        calendar.date(byAdding: .year, value: -years, to: self) ?? self
     }
-    
+
     func zeroSeconds(_ calendar: Calendar = .current) -> Date {
         let dateComponents = calendar.dateComponents(
             [.year, .month, .day, .hour, .minute],
             from: self
         )
-        return calendar.date(from: dateComponents)!
+
+        return calendar.date(from: dateComponents) ?? self
     }
-    
+
 }

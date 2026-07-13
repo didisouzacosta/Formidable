@@ -5,56 +5,45 @@
 //  Created by Adriano Costa on 04/02/25.
 //
 
-/// A validation rule that ensures a value is less than or equal to a reference value obtained via a `KeyPath`.
+/// A rule that requires a value to be less than or equal to a reference value read through a key path.
 ///
-/// ### Example Usage:
+/// # Example
+///
 /// ```swift
-/// struct FormData {
-///     let maxValue: Int
+/// enum ValidationError: Error {
+///     case tooLarge
 /// }
 ///
-/// let data = FormData(maxValue: 10)
-/// let rule = LessThanOrEqualKeyPathRule(data, keyPath: \FormData.maxValue, error: ValidationError.outOfBounds)
-///
-/// do {
-///     try rule.validate(10) // ✅ Passes validation
-///     try rule.validate(12) // ❌ Throws ValidationError.outOfBounds
-/// } catch {
-///     print(error)
+/// final class Limits {
+///     var maximum = 10
 /// }
+///
+/// let limits = Limits()
+/// let rule = LessThanOrEqualKeyPathRule(limits, keyPath: \.maximum, error: ValidationError.tooLarge)
+/// try rule.validate(10)
 /// ```
-///
-/// - Parameters:
-///   - Root: The root object containing the reference value.
-///   - Value: A `Comparable` type for validation.
 public struct LessThanOrEqualKeyPathRule<Root, Value: Comparable>: FormFieldRule {
-    
+
+    // MARK: - Public Properties
+
+    /// A transformation of the reference value before comparison.
     public typealias Transform = (Value) -> Value
-    
-    // MARK: - Public Variables
-    
-    /// Optional transformation closure applied to the reference value before comparison.
+    /// An optional transformation applied to the current reference value.
     public var transform: Transform?
-    
-    // MARK: - Private Variables
-    
+
+    // MARK: - Private Properties
+
     private let root: Root
     private let keyPath: KeyPath<Root, Value>
-    private let error: Error
-    
-    // MARK: - Initializers
-    
-    /// Initializes a new rule to validate that a value is less than or equal to a reference value.
-    ///
-    /// - Parameters:
-    ///   - root: The object containing the reference value.
-    ///   - keyPath: The `KeyPath` pointing to the reference value within `root`.
-    ///   - error: The error to throw if validation fails.
-    ///   - transform: An optional closure to modify the reference value before comparison.
+    private let error: any Error
+
+    // MARK: - Initializer
+
+    /// Creates an inclusive less-than rule backed by a key path.
     public init(
         _ root: Root,
         keyPath: KeyPath<Root, Value>,
-        error: Error,
+        error: any Error,
         transform: Transform? = nil
     ) {
         self.root = root
@@ -62,22 +51,19 @@ public struct LessThanOrEqualKeyPathRule<Root, Value: Comparable>: FormFieldRule
         self.error = error
         self.transform = transform
     }
-    
+
     // MARK: - Public Methods
-    
-    /// Validates that the given value is less than or equal to the reference value.
-    ///
-    /// - Parameter value: The value to validate.
-    /// - Throws: The specified error if validation fails.
+
+    /// Validates that the supplied value is less than or equal to the transformed reference value.
     public func validate(_ value: Value?) throws {
         guard let value else { return }
-        
+
         let referenceValue = root[keyPath: keyPath]
         let transformedValue = transform?(referenceValue) ?? referenceValue
-        
-        if value > transformedValue  {
+
+        if value > transformedValue {
             throw error
         }
     }
-    
+
 }

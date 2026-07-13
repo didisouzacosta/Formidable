@@ -25,6 +25,10 @@ struct GreaterThanRuleTests {
         #expect(throws: error) {
             try rule.validate(9)
         }
+
+        #expect(throws: error) {
+            try rule.validate(10)
+        }
     }
     
 }

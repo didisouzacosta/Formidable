@@ -7,14 +7,18 @@
 
 import Foundation
 
-struct User {
-    
-    var name: String
-    var email: String
-    var password: String
-    var birthday: Date
-    var language: Language
-    
+struct User: Equatable {
+
+    // MARK: - Public Properties
+
+    let name: String
+    let email: String
+    let password: String
+    let birthday: Date
+    let language: Language
+
+    // MARK: - Initializer
+
     init(
         _ name: String,
         email: String,
@@ -28,17 +32,21 @@ struct User {
         self.birthday = birthday
         self.language = language
     }
-    
+
 }
 
 extension User {
-    
-    static let new: User = .init(
-        "",
-        email: "",
-        password: "",
-        birthday: .now.remove(years: 18),
-        language: .none
-    )
-    
+
+    // MARK: - Public Properties
+
+    static var new: User {
+        User(
+            "",
+            email: "",
+            password: "",
+            birthday: Date.now.subtracting(years: 18),
+            language: .none
+        )
+    }
+
 }

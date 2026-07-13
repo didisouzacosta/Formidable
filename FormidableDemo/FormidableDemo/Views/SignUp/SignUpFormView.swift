@@ -5,104 +5,165 @@
 //  Created by Adriano Costa on 30/01/25.
 //
 
-import SwiftUI
 import Formidable
+import SwiftUI
 
 struct SignUpFormView: View {
-    
+
+    // MARK: - States
+
     @State private var form = SignUpForm(.new)
-    
+    @State private var submissionFeedback: SubmissionFeedback?
+
+    // MARK: - Body
+
     var body: some View {
         NavigationStack {
             Form {
-                Section {
+                Section("Account") {
                     TextField(
                         "Name",
                         text: $form.nameField.value
                     )
-                    .field($form.nameField)
-                    
+                    .textContentType(.name)
+                    .field(
+                        $form.nameField,
+                        accessibilityLabel: "Name errors"
+                    )
+
                     TextField(
-                        "E-mail",
+                        "Email",
                         text: $form.emailField.value
                     )
+                    .textContentType(.emailAddress)
                     .textInputAutocapitalization(.never)
                     .keyboardType(.emailAddress)
-                    .field($form.emailField)
-                    
+                    .autocorrectionDisabled()
+                    .field(
+                        $form.emailField,
+                        accessibilityLabel: "Email errors"
+                    )
+
                     SecureField(
                         "Password",
                         text: $form.passwordField.value
                     )
-                    .field($form.passwordField)
+                    .textContentType(.newPassword)
+                    .field(
+                        $form.passwordField,
+                        accessibilityLabel: "Password errors"
+                    )
                 }
-                
-                Section {
+
+                Section("Profile") {
                     DatePicker(
-                        "Birth",
+                        "Birthday",
                         selection: $form.birthField.value,
                         displayedComponents: .date
                     )
-                    .field($form.birthField)
-                    
+                    .field(
+                        $form.birthField,
+                        accessibilityLabel: "Birthday errors"
+                    )
+
                     Picker(
                         "Language",
                         selection: $form.languageField.value
                     ) {
                         ForEach(Language.allCases, id: \.self) { language in
-                            Text(language.detail)
+                            Text(language.title)
+                                .tag(language)
                         }
                     }
-                    .field($form.languageField)
+                    .field(
+                        $form.languageField,
+                        accessibilityLabel: "Language errors"
+                    )
                 }
-                
+
                 Section {
-                    Toggle("Terms", isOn: $form.agreeTermsField.value)
-                        .field($form.agreeTermsField)
+                    Toggle(
+                        "I agree to the terms",
+                        isOn: $form.agreeTermsField.value
+                    )
+                    .field(
+                        $form.agreeTermsField,
+                        accessibilityLabel: "Terms errors"
+                    )
+                } header: {
+                    Text("Consent")
                 } footer: {
                     RequirementsView(
-                        nameIsValid: form.nameField.isValid,
+                        form.nameField.isValid,
                         emailIsValid: form.emailField.isValid,
                         passwordIsValid: form.passwordField.isValid,
                         birthIsValid: form.birthField.isValid,
                         languageIsValid: form.languageField.isValid,
-                        agreeTerms: form.agreeTermsField.isValid
+                        agreeTermsIsValid: form.agreeTermsField.isValid
                     )
                     .padding(.top, 4)
                 }
             }
-            .navigationTitle("SignUp")
+            .navigationTitle("Sign Up")
             .toolbar {
-                ToolbarItemGroup() {
-                    Button(action: reset) {
-                        Text("Reset")
-                    }
-                    .disabled(form.isDisabled)
-                    
-                    Button(action: save) {
-                        Text("Save")
-                    }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Reset", systemImage: "arrow.counterclockwise", action: reset)
+                        .disabled(!form.isModified)
+                }
+
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save", systemImage: "checkmark", action: save)
                 }
             }
-            .onAppear {
-                UITextField.appearance().clearButtonMode = .whileEditing
+            .alert(item: $submissionFeedback) { feedback in
+                Alert(
+                    title: Text(feedback.title),
+                    message: Text(verbatim: feedback.message),
+                    dismissButton: .default(Text("OK"))
+                )
             }
         }
     }
-    
+
     // MARK: - Private Methods
-    
+
     private func reset() {
+        submissionFeedback = nil
         form.reset()
     }
-    
+
     private func save() {
         do {
             let user = try form.submit()
-            print(user)
-        } catch {}
+            submissionFeedback = SubmissionFeedback(
+                "Account ready",
+                message: "Welcome, \(user.name)!"
+            )
+        } catch {
+            submissionFeedback = SubmissionFeedback(
+                "Check the form",
+                message: error.localizedDescription
+            )
+        }
     }
-    
+
+}
+
+fileprivate struct SubmissionFeedback: Identifiable {
+
+    // MARK: - Public Properties
+
+    let id = UUID()
+    let title: LocalizedStringKey
+    let message: String
+
+    // MARK: - Initializer
+
+    init(_ title: LocalizedStringKey, message: String) {
+        self.title = title
+        self.message = message
+    }
+
 }
 
 #Preview {
