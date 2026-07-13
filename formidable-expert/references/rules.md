@@ -1,71 +1,68 @@
-# Formidable Rule Creation Guide
+# Validation Rule Workflows
 
-## Core Protocol: FormFieldRule
+## Rule contract and storage
 
-Every rule must conform to `FormFieldRule`:
+Conform rules to `FormFieldRule` and implement `validate(_ value: Value?) throws`. Store heterogeneous rules directly in `FormField.rules`:
 
 ```swift
-public protocol FormFieldRule {
-    associatedtype Value
-    func validate(_ value: Value?) throws
-}
+field.rules = [
+    RequiredRule(ValidationError.required),
+    EmailRule(ValidationError.invalidEmail)
+]
 ```
 
-## Pattern 1: Static Rules
+Do not wrap rules in `AnyRule`. It is an internal adapter used only while the framework invokes existential rules.
 
-For comparisons with fixed values.
+`RequiredRule` rejects `nil` and `Emptable.isEmpty`. Other built-in rules pass `nil`, allowing optionality to be composed independently with `RequiredRule`. Preserve that convention unless a new rule explicitly documents different semantics.
 
-- **Naming**: `[Action]Rule` (e.g., `RequiredRule`, `MinLengthRule`).
-- **Implementation**: Receives the expected value and the error in the `init`.
+## Built-in rule families
+
+- Presence and format: `RequiredRule`, `EmailRule`.
+- Fixed equality/order: `EqualRule`, `GreaterThanRule`, `GreaterThanOrEqualRule`, `LessThanRule`, `LessThanOrEqualRule`.
+- Fixed collection membership: `ContainsRule`, `UniqueRule`.
+- Measurement: `MinLengthRule`, `MaxLengthRule` using `Mensurable`.
+- Dynamic cross-field/reference rules: matching `EqualKeyPathRule`, comparison `KeyPathRule`, `ContainsKeyPathRule`, and `UniqueKeyPathRule` types.
+
+## Static rules
+
+Use a static rule when the reference is fixed for the rule's lifetime. End its type name in `Rule`, accept `any Error`, pass `nil` unless the rule owns requiredness, and document the public API.
 
 ```swift
-public struct MyStaticRule: FormFieldRule {
-    public typealias Value = Int
-    private let limit: Int
-    private let error: Error
+public struct EvenRule: FormFieldRule {
+    private let error: any Error
 
-    public init(_ limit: Int, error: Error) {
-        self.limit = limit
+    public init(_ error: any Error) {
         self.error = error
     }
 
-    public func validate(_ value: Value?) throws {
-        guard let value, value > limit else { throw error }
-    }
-}
-```
-
-## Pattern 2: KeyPath Rules
-
-For cross-field validation.
-
-- **Naming**: `[Action]KeyPathRule` (e.g., `EqualKeyPathRule`).
-- **Implementation**: Receives a `root` and a `KeyPath`.
-
-```swift
-public struct MyKeyPathRule<Root, Value: Equatable>: FormFieldRule {
-    private let root: Root
-    private let keyPath: KeyPath<Root, Value>
-    private let error: Error
-
-    public init(_ root: Root, keyPath: KeyPath<Root, Value>, error: Error) {
-        self.root = root
-        self.keyPath = keyPath
-        self.error = error
-    }
-
-    public func validate(_ value: Value?) throws {
+    public func validate(_ value: Int?) throws {
         guard let value else { return }
-        let referenceValue = root[keyPath: keyPath]
-        if value != referenceValue { throw error }
+
+        if !value.isMultiple(of: 2) {
+            throw error
+        }
     }
 }
 ```
 
-## Type Erasure with AnyRule
+## KeyPath rules
 
-Always use `AnyRule` when adding rules to a `FormField`'s `rules` list to erase generic types:
+Use a KeyPath rule when validation must read the current reference value on every invocation. End the type name in `KeyPathRule`, retain the root and key path, and apply the optional transform to the reference value or collection before comparison.
 
 ```swift
-field.rules = [AnyRule(RequiredRule(error)), AnyRule(MyKeyPathRule(form, keyPath: \.otherField, error: error))]
+let rule = EqualKeyPathRule(
+    credentials,
+    keyPath: \.password,
+    error: ValidationError.mismatch,
+    transform: { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+)
 ```
+
+Reference-type roots reflect later mutations dynamically. For value-type roots, the rule retains the value supplied at initialization.
+
+## Tests and documentation
+
+- Put each rule suite in `Tests/FormidableTests/Rules/<RuleName>Tests.swift`.
+- Mark the suite `@MainActor` and use Swift Testing.
+- Cover valid, invalid, and `nil` inputs; boundary equality for ordered rules; transforms and dynamic root updates for KeyPath rules.
+- Name the file after the primary rule type and include `///` documentation with a compiling `# Example` for every public rule and initializer.

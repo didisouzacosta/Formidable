@@ -1,29 +1,31 @@
 ---
 name: formidable-expert
-description: Expert in the Formidable framework for SwiftUI. Use when needing to create new validation rules, structure forms (conforming to Formidable), migrate fields to the FormField pattern, or implement reset/validation logic in the Formidable project.
+description: Develop and review the Formidable Swift form-management framework and its SwiftUI integration. Use when working on Formidable, FormField, FormFieldRepresentable, Emptable, Mensurable, validation or KeyPath rules, Binding-backed and transformed fields, reset/validate state transitions, `.field` error presentation and accessibility, API compatibility, tests, or public documentation.
 ---
 
-# Formidable Expert Skill
+# Formidable Expert
 
-This skill provides procedural guidance for developing and maintaining the **Formidable** framework.
+Use the repository's `AGENTS.md` as the project-specific source of truth. Inspect the current implementation before changing behavior; report any discrepancy before altering a public contract.
 
-## Quick Navigation
+## Workflow
 
-Follow the appropriate guide based on your task:
+1. Read `AGENTS.md`, the affected source, and its focused tests.
+2. Load only the references needed for the task:
+   - [references/forms.md](references/forms.md): form discovery, contracts, aggregate state, validation, and reset.
+   - [references/field-lifecycle.md](references/field-lifecycle.md): local and external storage, transformations, modification state, and error visibility.
+   - [references/rules.md](references/rules.md): built-in and custom static/KeyPath rule patterns.
+   - [references/swiftui.md](references/swiftui.md): `.field`, accessibility, visibility, disabled state, and error presentation.
+3. Preserve Swift 6.2 compatibility across iOS 17+, macOS 15+, and tvOS 17+.
+4. Apply `$swift-mark-organization` to modified Swift files. Apply `$swiftui-expert-skill` to SwiftUI, Observation, animation, accessibility, or state-ownership work. Use the view-refactor or performance-audit skills only under the conditions in `AGENTS.md`.
+5. Add focused Swift Testing coverage for every changed rule, contract, field, or form state transition.
+6. Run `swift test` from the package root. Treat any documented test count as informational.
 
-- **Create New Rules**: See [references/rules.md](references/rules.md) for `FormFieldRule` implementation patterns (Static vs KeyPath) and `AnyRule` usage.
-- **Form Architecture**: See [references/forms.md](references/forms.md) for structuring classes that conform to `Formidable` and integrating with SwiftUI views.
-- **Unit Testing**: Ensure every new rule has tests in `Tests/FormidableTests/Rules/` and every new field in `Tests/FormidableTests/FormFieldTests.swift`. All test structures must be marked with `@MainActor`.
+## Invariants
 
-## Core Concepts
-
-- **FormField<Value>**: The main `@Observable` class that manages value, rules, and error state. Supports initialization with `Binding<Value>` for direct data synchronization.
-- **Validation Flow**: `FormField` displays errors in the `set` of the `value` property. The form's `validate()` method triggers `showErrors = true` for all fields.
-- **Transformation**: Use the `transform` parameter in the `FormField` init to normalize data (e.g., `trimmingCharacters`, `uppercased`).
-
-## Code Standards
-
-- Always use `// MARK: -` to organize code sections.
-- All public components must include `///` documentation with `# Example` examples.
-- Contract protocols must end in `Representable`, `able`, or `ible`.
-- Rules must end in `Rule`.
+- Keep `Formidable` free of an actor-isolation requirement; isolate concrete app types only when their usage requires it.
+- Preserve `FormFieldRepresentable: ObservableObject` compatibility while using `@Observable` for new observable reference types.
+- Store rules directly as `[any FormFieldRule]`. Keep `AnyRule` internal and absent from call sites.
+- Preserve field/rule order when collecting errors and throwing the first validation failure.
+- Exclude hidden and disabled fields from validation.
+- Keep public APIs documented with `///`; give public components a compiling `# Example`.
+- Preserve source compatibility unless the requested change explicitly migrates a public contract.

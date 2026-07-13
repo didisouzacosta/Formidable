@@ -1,0 +1,4 @@
+interface:
+  display_name: "Formidable Expert"
+  short_description: "Build and maintain Formidable Swift forms"
+  default_prompt: "Use $formidable-expert to implement or review Formidable forms, fields, validation rules, and SwiftUI error presentation."
