@@ -12,7 +12,9 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue" alt="MIT License" /></a>
 </p>
 
-https://github.com/user-attachments/assets/2aab4a21-b7ff-4526-a73b-7bba02a7f070
+<p align="center">
+  <img src="preview.gif" width="600" alt="Formidable demo: a sign-up form showing validation messages under each invalid field" />
+</p>
 
 ---
 
