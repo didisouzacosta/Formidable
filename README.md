@@ -67,7 +67,7 @@ https://github.com/didisouzacosta/Formidable
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/didisouzacosta/Formidable", .upToNextMajor(from: "1.3.0"))
+    .package(url: "https://github.com/didisouzacosta/Formidable", .upToNextMajor(from: "1.4.0"))
 ]
 ```
 
