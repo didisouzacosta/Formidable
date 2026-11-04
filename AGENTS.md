@@ -40,6 +40,7 @@ This file is the project-specific source of truth for work in **Formidable**. Th
 
 - Apply `.field($form.field, accessibilityLabel: ...)` to standard SwiftUI controls to attach Formidable behavior.
 - The modifier wraps the control in `FormFieldContainer`, applies hidden and disabled state, and renders localized error descriptions.
+- Error presentation comes from the `FormFieldErrorStyle` stored in the Environment (`.formFieldErrorStyle(_:)`); `DefaultFormFieldErrorStyle` keeps the callout font and red color. `FormFieldContainer`, not the style, owns the accessibility element, label, and value of the messages.
 - The error container must receive a meaningful, localizable accessibility label. Icon-only controls must also expose a meaningful accessibility label.
 
 ## Skills and Precedence
@@ -101,9 +102,10 @@ For non-`View` types:
 
 ## Naming, Layout, and Documentation
 
-- Follow the existing source layout: `Contracts/`, `Rules/`, `Modifiers/`, and `Components/`.
+- Follow the existing source layout: `Contracts/`, `Rules/`, `Modifiers/`, `Components/`, and `Styles/`.
 - Contract protocol names must end in `Representable`, `able`, or `ible`.
 - Rule types must end in `Rule`; cross-field rule types must end in `KeyPathRule`.
+- SwiftUI-style presentation protocols and their implementations live in `Styles/` and end in `Style`, following SwiftUI convention (for example `FormFieldErrorStyle`); their configuration types end in `StyleConfiguration`. The `Representable`/`able`/`ible` suffix rule applies to contract protocols only.
 - A Swift file must match its primary type name. `FieldRule.swift` is a known legacy discrepancy for `FormFieldRule`; do not copy that mismatch into new files.
 - Document every public type and public API with `///`. Include a compiling usage example under a `# Example` heading for public components.
 - Keep view-owned `@State` and injected `@Bindable` properties private. Use `@State` to own an `@Observable` reference in a view and `@Bindable` only when the view needs bindings to an injected observable.
@@ -113,7 +115,7 @@ For non-`View` types:
 
 - Use Swift Testing (`import Testing`, `@Test`, and `#expect`).
 - Mark every test suite type with `@MainActor`. Helper types need actor isolation only when their usage requires it.
-- Put rule tests in `Tests/FormidableTests/Rules/`, contract tests in `Tests/FormidableTests/Contracts/`, and shared field/form behavior tests in the corresponding top-level test file.
+- Put rule tests in `Tests/FormidableTests/Rules/`, contract tests in `Tests/FormidableTests/Contracts/`, style tests in `Tests/FormidableTests/Styles/`, and shared field/form behavior tests in the corresponding top-level test file.
 - Every new rule or contract behavior requires focused unit tests. Every changed field or form behavior must cover the affected state transitions.
 - As applicable, test initial and original values, transformations, external binding synchronization, `showErrors`, `reset`, `isModified`, `isHidden`, `isDisabled`, error aggregation, and the first error thrown by `validate()`.
 - Run the package verification command from the repository root:
@@ -122,4 +124,4 @@ For non-`View` types:
 swift test
 ```
 
-- The established baseline at the time of this document revision is **72 tests in 21 suites**. Treat the count as informational rather than a substitute for a passing run.
+- The established baseline at the time of this document revision is **91 tests in 24 suites**. Treat the count as informational rather than a substitute for a passing run.

@@ -9,14 +9,13 @@ import SwiftUI
 
 struct FormFieldContainer<Content: View, Form: FormFieldRepresentable>: View {
 
+    // MARK: - Environments
+
+    @Environment(\.formFieldErrorStyle) private var errorStyle
+
     // MARK: - Bindings
 
     @Binding private var field: Form
-
-    // MARK: - Public Properties
-
-    private let content: Content
-    private let accessibilityLabel: LocalizedStringKey
 
     // MARK: - Body
 
@@ -24,17 +23,11 @@ struct FormFieldContainer<Content: View, Form: FormFieldRepresentable>: View {
         VStack(alignment: .leading) {
             content
 
-            if !messages.isEmpty {
-                VStack(alignment: .leading) {
-                    ForEach(Array(messages.enumerated()), id: \.offset) { _, message in
-                        Text(message)
-                    }
-                }
-                .font(.callout)
-                .foregroundStyle(.red)
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel(Text(accessibilityLabel))
-                .accessibilityValue(Text(verbatim: messages.joined(separator: ", ")))
+            if !configuration.errors.isEmpty {
+                makeErrorView(errorStyle, configuration: configuration)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(Text(accessibilityLabel))
+                    .accessibilityValue(Text(verbatim: configuration.messages.joined(separator: ", ")))
             }
         }
         .disabled(field.isDisabled)
@@ -43,8 +36,11 @@ struct FormFieldContainer<Content: View, Form: FormFieldRepresentable>: View {
 
     // MARK: - Private Properties
 
-    private var messages: [String] {
-        (field.showErrors ? field.errors : []).map { $0.localizedDescription }
+    private let content: Content
+    private let accessibilityLabel: LocalizedStringKey
+
+    private var configuration: FormFieldErrorStyleConfiguration {
+        FormFieldErrorStyleConfiguration(errors: field.showErrors ? field.errors : [])
     }
 
     // MARK: - Initializer
@@ -58,6 +54,15 @@ struct FormFieldContainer<Content: View, Form: FormFieldRepresentable>: View {
 
         self.content = content()
         self.accessibilityLabel = LocalizedStringKey(accessibilityLabel)
+    }
+
+    // MARK: - Private Methods
+
+    private func makeErrorView(
+        _ style: some FormFieldErrorStyle,
+        configuration: FormFieldErrorStyleConfiguration
+    ) -> AnyView {
+        AnyView(style.makeBody(configuration: configuration))
     }
 
 }
