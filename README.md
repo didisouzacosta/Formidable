@@ -29,7 +29,7 @@
 - [Transforming Values](#transforming-values)
 - [Hiding and Disabling Fields](#hiding-and-disabling-fields)
 - [Customizing Error Messages](#customizing-error-messages)
-- [Agent Skill (Codex)](#-agent-skill-codex)
+- [Agent Skill (Codex and Claude)](#-agent-skill-codex-and-claude)
 
 ---
 
@@ -437,11 +437,13 @@ struct PasswordErrorStyle: FormFieldErrorStyle {
 
 ---
 
-## 🤖 Agent Skill (Codex)
+## 🤖 Agent Skill (Codex and Claude)
 
-This repository includes the **`formidable-expert`** Agent Skill. It teaches Codex the Formidable patterns, so it can write new rules and forms the way this project expects.
+This repository includes the **`formidable-expert`** Agent Skill. It teaches your coding agent the Formidable patterns, so it can write new rules and forms the way this project expects. The same skill works in **Codex** and **Claude**.
 
 ### Installation
+
+#### Codex
 
 Ask Codex to install the [`formidable-expert`](formidable-expert) skill directly from this repository:
 
@@ -451,12 +453,40 @@ Use $skill-installer to install the formidable-expert skill from https://github.
 
 Codex detects new skills automatically. If the skill does not appear, restart Codex. Skills work in the Codex desktop app, CLI and IDE extension. See the [Codex Agent Skills documentation](https://learn.chatgpt.com/docs/build-skills) for more options.
 
+#### Claude Code
+
+Copy the [`formidable-expert`](formidable-expert) folder into your personal skills folder, so it is available in every project:
+
+```shell
+git clone --depth 1 https://github.com/didisouzacosta/Formidable.git /tmp/Formidable
+mkdir -p ~/.claude/skills
+cp -R /tmp/Formidable/formidable-expert ~/.claude/skills/
+```
+
+To share the skill with everyone working on your app instead, copy the folder into your project's `.claude/skills/` folder and commit it.
+
+Claude Code picks up new skills in the current session. If the skill does not appear, run `/reload-skills` or restart Claude Code. Skills work in the Claude Code CLI, desktop app and IDE extensions. See the [Claude Code skills documentation](https://code.claude.com/docs/en/skills) for more options.
+
+#### Claude apps (claude.ai and desktop)
+
+1. Download [`formidable-expert.zip`](https://github.com/didisouzacosta/Formidable/raw/main/formidable-expert.zip).
+2. Open **Customize › Skills**, click **+**, choose **Create skill › Upload a skill**, and select the ZIP file.
+3. Make sure the skill is turned on.
+
+Custom skills need code execution, so turn on **Settings › Capabilities › Code execution and file creation** if it is off. See [Using Skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude) for details.
+
 ### How to use
 
-Mention `$formidable-expert` in your request, or let Codex pick it automatically when your request matches. For example:
+Ask for Formidable work in your own words, and the agent picks the skill automatically when your request matches. To call it explicitly:
 
-- "Use `$formidable-expert` to create a new validation rule for CNPJ."
-- "Use `$formidable-expert` to migrate this SwiftUI form to the Formidable pattern."
-- "Use `$formidable-expert` to show how to structure a form with cross-validation."
+| Agent | How to call the skill |
+| --- | --- |
+| Codex | Mention `$formidable-expert`. In the CLI or IDE extension, run `/skills` or type `$` to browse the available skills. |
+| Claude Code | Type `/formidable-expert`, followed by your request. |
+| Claude apps | Mention Formidable in your request. Claude loads the skill on its own. |
 
-In the CLI or IDE extension, run `/skills` or type `$` to browse the available skills.
+For example:
+
+- "Create a new validation rule for CNPJ."
+- "Migrate this SwiftUI form to the Formidable pattern."
+- "Show how to structure a form with cross-validation."
