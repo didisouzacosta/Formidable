@@ -1,10 +1,16 @@
 <p align="center">
-  <image src="app-icon.png" width="200" />
+  <img src="app-icon.png" width="200" alt="Formidable icon" />
 </p>
 
 <h1 align="center">Formidable</h1>
 
 <p align="center">Simple, declarative form validation for SwiftUI.</p>
+
+<p align="center">
+  <a href="https://swift.org"><img src="https://img.shields.io/badge/Swift-6.2-F05138?logo=swift&logoColor=white" alt="Swift 6.2" /></a>
+  <a href="https://www.swift.org/documentation/package-manager/"><img src="https://img.shields.io/badge/SPM-compatible-brightgreen" alt="Swift Package Manager compatible" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue" alt="MIT License" /></a>
+</p>
 
 https://github.com/user-attachments/assets/2aab4a21-b7ff-4526-a73b-7bba02a7f070
 
